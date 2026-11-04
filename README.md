@@ -87,8 +87,11 @@ npm run dev                  # abre em http://localhost:3000
 ### 3. Publicar na internet (Vercel)
 
 1. Em <https://vercel.com>, importe este repositório do GitHub.
-2. Em **Environment Variables**, adicione `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-3. Clique em **Deploy**. Pronto: cada `git push` na branch principal publica uma nova versão.
+2. Ligue o banco ao projeto da Vercel de uma destas formas:
+   - **Pela integração:** na aba **Storage** do projeto, conecte o banco do Supabase. A Vercel cria as variáveis sozinha (`SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`…), e a plataforma reconhece esses nomes.
+   - **Na mão:** em **Settings → Environment Variables**, adicione `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Os valores ficam no Supabase, em **Project Settings → API Keys**; a chave publicável `sb_publishable_…` também serve.
+3. **Depois de criar ou mudar variáveis, faça um novo deploy:** **Deployments → ⋯ → Redeploy**. As variáveis só entram na próxima build. Sem isso, o site continua mostrando "O banco de dados ainda não foi configurado".
+4. Cada `git push` na branch principal publica uma nova versão.
 
 ## Como usar em sala
 
