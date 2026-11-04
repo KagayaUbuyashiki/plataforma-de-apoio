@@ -60,11 +60,21 @@ O editor é o **Monaco**, o mesmo do VS Code, com tema escuro, abas, explorador 
 
 1. Crie uma conta em <https://supabase.com> e um projeto novo. O plano gratuito é suficiente.
 2. Abra **SQL Editor → New query**, cole o conteúdo de [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) e clique em **Run**.
-3. (Opcional) Faça o mesmo com [`supabase/seed.sql`](supabase/seed.sql) para criar uma aula de exemplo e a turma de teste `TESTE-2026`.
-4. **Bloqueie novos cadastros:** vá em **Authentication → Sign In / Providers → Email** e desative **"Allow new users to sign up"**. Assim, só quem você criar consegue entrar no painel.
+3. Faça o mesmo, nesta ordem, com:
+   - [`supabase/seed.sql`](supabase/seed.sql) (opcional): cria uma aula de exemplo e a turma de teste `TESTE-2026`;
+   - [`supabase/migrations/0002_instrutores_autorizados.sql`](supabase/migrations/0002_instrutores_autorizados.sql): faz só os instrutores **autorizados** entrarem no painel.
+4. **Bloqueie novos cadastros:** vá em **Authentication → Sign In / Providers → Email** e desative **"Allow new users to sign up"**.
 5. **Crie a conta de cada instrutor** em **Authentication → Users → Add user → Create new user**, informando e-mail e senha e marcando **Auto Confirm User**.
+6. **Autorize a conta** no **SQL Editor**, trocando o e-mail:
 
-> Importante: qualquer conta criada no Supabase Auth tem acesso total ao painel. Por isso o cadastro público precisa ficar desativado.
+   ```sql
+   insert into public.instrutores_autorizados (user_id, email)
+   select id, email from auth.users where email = 'email.do.instrutor@exemplo.com';
+   ```
+
+   Para tirar o acesso de alguém: `delete from public.instrutores_autorizados where email = '...';`
+
+> Segurança: entrar no painel exige estar na lista `instrutores_autorizados`. Mesmo que alguém crie uma conta, ela não vê turmas nem avaliações e não altera nada até ser autorizada. Mesmo assim, deixe o cadastro público desligado.
 
 ### 2. Rodar no seu computador
 

@@ -32,9 +32,7 @@ export async function atualizarSessao(request: NextRequest) {
   if (ehAdmin && !ehLogin && !user) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
-  if (ehLogin && user) {
-    return NextResponse.redirect(new URL("/admin", request.url));
-  }
+  // (Quem já está logado e abre /admin/login é tratado na própria página, que confere se a conta é autorizada.)
 
   return response;
 }
