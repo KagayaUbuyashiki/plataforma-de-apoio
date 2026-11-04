@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { diagnosticoSupabase, supabaseConfigurado } from "@/lib/supabase/config";
-import type { Aula, AulaComInstrutores, Instrutor, Site } from "@/lib/tipos";
+import type { Aula, AulaComInstrutores, Contato, Instrutor, Site } from "@/lib/tipos";
 
 export type Resultado<T> = { dados: T; erro: string | null };
 
@@ -57,4 +57,15 @@ export async function listarInstrutores(): Promise<Resultado<Instrutor[]>> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("instrutores").select("*").order("nome");
   return { dados: (data as Instrutor[]) ?? [], erro: error?.message ?? null };
+}
+
+export async function listarContatos(): Promise<Resultado<Contato[]>> {
+  if (!supabaseConfigurado()) return { dados: [], erro: SEM_CONFIG };
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("contatos")
+    .select("*")
+    .order("ordem", { ascending: true })
+    .order("nome", { ascending: true });
+  return { dados: (data as Contato[]) ?? [], erro: error?.message ?? null };
 }

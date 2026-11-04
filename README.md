@@ -13,8 +13,9 @@ Plataforma central para **alunos e voluntários** do programa **Meu Primeiro Sit
 | `/sites` | todos | Galeria de **cards clicáveis** (imagem de preview, descrição e link), com filtro por categoria e por ODS |
 | `/ods` e `/ods/[n]` | todos | Os 17 ODS: explicação, por que importa, ganchos locais, perguntas de pesquisa, ideias de páginas e **paleta de cores em CSS** pronta para copiar |
 | `/editor` | alunos | **Editor de código estilo VS Code** com prévia ao vivo, em 3 níveis (veja abaixo). Projetos salvos no navegador, com download e upload em `.zip` |
+| `/contatos` | todos | Contatos da equipe (e-mail, WhatsApp, telefone, link e observação), cadastrados pelos instrutores em `/admin/contatos` |
 | `/avaliar` | alunos | Avaliação **anônima** da aula e de cada instrutor (estrelas de 1 a 5 e comentário), liberada pelo **código da turma** |
-| `/admin` | instrutores | Login; cadastro de sites (com upload de imagem), aulas (Markdown com pré-visualização), turmas, códigos e instrutores; relatório de avaliações com exportação CSV |
+| `/admin` | instrutores | Login; cadastro de sites (com upload de imagem), aulas (Markdown com pré-visualização), turmas, códigos, instrutores e contatos; relatório de avaliações com exportação CSV |
 
 ## Editor de código (`/editor`)
 
@@ -63,6 +64,8 @@ O editor é o **Monaco**, o mesmo do VS Code, com tema escuro, abas, explorador 
 3. Faça o mesmo, nesta ordem, com:
    - [`supabase/seed.sql`](supabase/seed.sql) (opcional): cria uma aula de exemplo e a turma de teste `TESTE-2026`;
    - [`supabase/migrations/0002_instrutores_autorizados.sql`](supabase/migrations/0002_instrutores_autorizados.sql): faz só os instrutores **autorizados** entrarem no painel.
+   - [`supabase/migrations/0003_ajustes_desempenho.sql`](supabase/migrations/0003_ajustes_desempenho.sql): índices e ajustes de desempenho;
+   - [`supabase/migrations/0004_contatos.sql`](supabase/migrations/0004_contatos.sql): tabela da página de Contatos.
 4. **Bloqueie novos cadastros:** vá em **Authentication → Sign In / Providers → Email** e desative **"Allow new users to sign up"**.
 5. **Crie a conta de cada instrutor** em **Authentication → Users → Add user → Create new user**, informando e-mail e senha e marcando **Auto Confirm User**.
 6. **Autorize a conta** no **SQL Editor**, trocando o e-mail:

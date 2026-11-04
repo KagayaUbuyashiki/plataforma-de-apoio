@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/admin/sites", rotulo: "Sites" },
   { href: "/admin/aulas", rotulo: "Aulas" },
   { href: "/admin/turmas", rotulo: "Turmas e instrutores" },
+  { href: "/admin/contatos", rotulo: "Contatos" },
   { href: "/admin/avaliacoes", rotulo: "Avaliações" },
 ];
 

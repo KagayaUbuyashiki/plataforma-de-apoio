@@ -63,3 +63,17 @@ export type AvaliacaoInstrutor = {
   nota_atencao: number;
   comentario: string | null;
 };
+
+export type Contato = {
+  id: string;
+  nome: string;
+  funcao: string | null;
+  email: string | null;
+  /** Só números, com DDD (ex.: 32999998888). */
+  telefone: string | null;
+  whatsapp: boolean;
+  link: string | null;
+  descricao: string | null;
+  ordem: number;
+  created_at: string;
+};

@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/editor", rotulo: "Editor" },
   { href: "/sites", rotulo: "Sites" },
   { href: "/ods", rotulo: "ODS" },
+  { href: "/contatos", rotulo: "Contatos" },
 ];
 
 export function Header() {
