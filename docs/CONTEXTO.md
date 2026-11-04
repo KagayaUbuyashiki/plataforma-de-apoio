@@ -102,7 +102,7 @@ Plataforma de apoio para alunos e voluntários do programa **Meu Primeiro Site**
    - a senha do banco (Database → Reset password; depois atualizar as variáveis `POSTGRES_*` na Vercel);
    - a secret key (`sb_secret_…`): criar uma nova e apagar a antiga;
    - desativar as chaves legacy (`service_role`, JWT secret). O site usa a chave publicável, então não é afetado. Depois, remover `NEXT_PUBLIC_SUPABASE_ANON_KEY` (legacy) da Vercel.
-5. Apagar no GitHub a branch antiga `claude/plataforma-mvp`, que tem um commit antigo com outro autor. O ambiente de trabalho não tem permissão para apagar branches.
+5. Apagar no GitHub a branch antiga (a única além da `main`, em GitHub → Branches), que tem um commit antigo com outro autor. O ambiente de trabalho não tem permissão para apagar branches.
 
 ## Ideias para depois
 
