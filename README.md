@@ -12,8 +12,41 @@ Plataforma central para **alunos e voluntários** do programa **Meu Primeiro Sit
 | `/aulas` e `/aulas/[slug]` | todos | Resumo de cada aula, com códigos de exemplo, materiais e instrutores |
 | `/sites` | todos | Galeria de **cards clicáveis** (imagem de preview, descrição e link), com filtro por categoria e por ODS |
 | `/ods` e `/ods/[n]` | todos | Os 17 ODS: explicação, por que importa, ganchos locais, perguntas de pesquisa, ideias de páginas e **paleta de cores em CSS** pronta para copiar |
+| `/editor` | alunos | **Editor de código estilo VS Code** com prévia ao vivo, em 3 níveis (veja abaixo). Projetos salvos no navegador, com download e upload em `.zip` |
 | `/avaliar` | alunos | Avaliação **anônima** da aula e de cada instrutor (estrelas de 1 a 5 e comentário), liberada pelo **código da turma** |
 | `/admin` | instrutores | Login; cadastro de sites (com upload de imagem), aulas (Markdown com pré-visualização), turmas, códigos e instrutores; relatório de avaliações com exportação CSV |
+
+## Editor de código (`/editor`)
+
+O editor é o **Monaco**, o mesmo do VS Code, com tema escuro, abas, explorador de arquivos, barra de status e pré-visualização do site ao vivo.
+
+| | 🧩 Iniciante | ⌨️ Intermediário | 🚀 Livre |
+|---|---|---|---|
+| Arquivos | `index.html` e `style.css` já criados e comentados linha a linha | Estrutura básica pronta | O aluno cria, nomeia e organiza arquivos e pastas, e envia imagens |
+| Como escreve | **Blocos**: clicar em "Lista", "Link", "Cor de fundo"… insere o código real, comentado, e explica cada parte | Digitando, com **autocompletar em português** (digite `h` e aparecem `<h1>`…`<h6>` com explicação) | Digitando, com o autocompletar padrão e os atalhos **Emmet** (`!` + Tab, `ul>li*3` + Tab) |
+| Explicação ao passar o mouse | ✓ | ✓ | — |
+| Missões com verificação automática | ✓ | ✓ | — |
+
+- **Prévia:**
+  - atualiza enquanto o aluno digita;
+  - junta HTML, CSS (inclusive em pastas, como `css/style.css`) e imagens;
+  - permite navegar entre páginas pelos links;
+  - avisa quando um link aponta para um arquivo que não existe.
+- **Salvamento:**
+  - automático, no navegador (vários projetos por computador, cada um com nome);
+  - **Baixar .zip** gera os arquivos de verdade;
+  - **Abrir .zip** (na tela `/editor`) traz um projeto de volta.
+- **Sem depender de CDN:**
+  - o Monaco é copiado para `public/monaco/` pelo script `scripts/copiar-monaco.mjs`, que roda sozinho no `npm install`, no `npm run dev` e no `npm run build`;
+  - a pasta fica fora do Git;
+  - o mesmo script gera a tradução em português dos menus do editor.
+- O conteúdo didático fica em `src/lib/editor/`:
+  - `glossario.ts`: tags e propriedades explicadas;
+  - `blocos.ts`: blocos do Iniciante;
+  - `missoes.ts`: desafios;
+  - `niveis.ts`: arquivos iniciais de cada nível.
+
+  Edite esses arquivos para adaptar o conteúdo às suas aulas.
 
 ## Tecnologias
 
@@ -64,13 +97,18 @@ npm run dev                  # abre em http://localhost:3000
 ## Estrutura do código
 
 ```
-src/app/              páginas (cada pasta é uma rota)
+src/app/(site)/       páginas com cabeçalho e rodapé (cada pasta é uma rota)
   avaliar/            formulário de avaliação + Server Actions
+  editor/             escolha do nível e projetos salvos
   admin/login/        login dos instrutores
   admin/(painel)/     área protegida: sites, aulas, turmas, avaliações
+src/app/editor/[nivel]/  o editor em tela cheia
 src/components/       componentes visuais (SiteCard, OdsCard, StarRating…)
+src/components/editor/   interface estilo VS Code (explorador, abas, prévia, blocos…)
 src/data/ods.ts       conteúdo dos 17 ODS (edite aqui para mudar os textos)
 src/lib/              acesso ao Supabase, tipos e utilidades
+src/lib/editor/       conteúdo e lógica do editor (glossário, blocos, missões, prévia, .zip)
+scripts/              cópia do Monaco para public/ e tradução dos menus
 supabase/             SQL do banco (tabelas, segurança, funções) e dados de exemplo
 ```
 

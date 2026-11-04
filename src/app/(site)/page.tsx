@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 const ATALHOS = [
   { href: "/aulas", titulo: "Aulas", texto: "Resumos, códigos de exemplo e materiais de cada encontro.", icone: "📚" },
+  { href: "/editor", titulo: "Editor de código", texto: "Crie o seu site num editor igual ao VS Code, com prévia ao vivo.", icone: "💻" },
   { href: "/sites", titulo: "Sites de referência", texto: "Sites que apresentamos em aula para inspirar o seu projeto.", icone: "🌐" },
   { href: "/ods", titulo: "Os 17 ODS", texto: "Entenda cada objetivo e encontre ideias para o tema do seu site.", icone: "🎯" },
   { href: "/avaliar", titulo: "Avaliar aula", texto: "Dê sua opinião, de forma anônima, sobre a aula e os instrutores.", icone: "⭐" },
@@ -51,7 +52,7 @@ export default async function Inicio() {
 
       <section aria-labelledby="atalhos">
         <h2 id="atalhos" className="sr-only">Atalhos</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {ATALHOS.map((a) => (
             <Link
               key={a.href}

@@ -8,11 +8,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node scripts/copiar-monaco.mjs",
+    "prebuild": "node scripts/copiar-monaco.mjs",
+    "predev": "node scripts/copiar-monaco.mjs"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.4",
+    "emmet-monaco-es": "^5.7.0",
+    "jszip": "^3.10.2",
+    "monaco-editor": "^0.55.1",
     "next": "^15.5.29",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

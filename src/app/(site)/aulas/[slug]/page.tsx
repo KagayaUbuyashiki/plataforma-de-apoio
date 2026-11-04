@@ -58,6 +58,15 @@ export default async function AulaDetalhe({ params }: Props) {
           <p className="text-sm text-marca-100">É anônimo e leva 1 minuto.</p>
         </Link>
 
+        <Link
+          href="/editor"
+          className="rounded-xl border border-slate-200 bg-[#1e1e1e] p-5 text-white shadow-sm transition hover:border-marca-500"
+        >
+          <span className="font-mono text-sm text-[#569cd6]" aria-hidden>&lt;/&gt;</span>
+          <p className="mt-1 font-semibold">Praticar no editor</p>
+          <p className="text-sm text-slate-300">Teste o código da aula e veja o resultado ao vivo.</p>
+        </Link>
+
         {aula.instrutores.length > 0 && (
           <section className="rounded-xl border border-slate-200 bg-white p-5">
             <h2 className="font-semibold">Instrutores</h2>
