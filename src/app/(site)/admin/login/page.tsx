@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Aviso } from "@/components/Aviso";
 import { botaoSecundario, cartao } from "@/components/admin/estilos";
 import { ehInstrutorAutorizado, MSG_NAO_AUTORIZADO } from "@/lib/auth";
-import { supabaseConfigurado } from "@/lib/supabase/config";
+import { diagnosticoSupabase, supabaseConfigurado } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import { sair } from "./actions";
 import { FormLogin } from "./FormLogin";
@@ -30,7 +30,7 @@ export default async function Login() {
       <p className="mt-1 text-sm text-slate-600">Acesso restrito aos instrutores e voluntários do programa.</p>
       {!supabaseConfigurado() && (
         <div className="mt-4">
-          <Aviso tipo="erro">O Supabase ainda não foi configurado. Siga o passo a passo do README.</Aviso>
+          <Aviso tipo="erro">O Supabase ainda não foi configurado. Siga o passo a passo do README. Diagnóstico: {diagnosticoSupabase()}.</Aviso>
         </div>
       )}
       {naoAutorizado ? (

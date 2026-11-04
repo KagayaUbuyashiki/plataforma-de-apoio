@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
-import { supabaseConfigurado } from "@/lib/supabase/config";
+import { diagnosticoSupabase, supabaseConfigurado } from "@/lib/supabase/config";
 import type { Aula, AulaComInstrutores, Instrutor, Site } from "@/lib/tipos";
 
 export type Resultado<T> = { dados: T; erro: string | null };
 
-const SEM_CONFIG = "O banco de dados ainda não foi configurado (veja o README).";
+const SEM_CONFIG = `O banco de dados ainda não foi configurado (veja o README). Diagnóstico: ${diagnosticoSupabase()}.`;
 
 type AulaBruta = Aula & { aula_instrutores?: { instrutores: Instrutor | null }[] };
 
