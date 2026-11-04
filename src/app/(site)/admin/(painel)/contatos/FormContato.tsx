@@ -39,7 +39,7 @@ export function FormContato({ contato }: { contato?: Contato }) {
             placeholder="(32) 99999-8888"
             className={campo}
           />
-          <label className="mt-2 flex items-center gap-2 text-sm text-slate-700">
+          <label className="mt-2 flex items-center gap-2 text-sm text-[#2b3a4a]">
             <input type="checkbox" name="whatsapp" defaultChecked={contato?.whatsapp ?? true} className="h-4 w-4" />
             Este número tem WhatsApp
           </label>

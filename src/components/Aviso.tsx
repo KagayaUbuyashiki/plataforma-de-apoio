@@ -1,14 +1,17 @@
 type Props = { tipo?: "info" | "erro" | "sucesso"; children: React.ReactNode };
 
 const ESTILOS = {
-  info: "border-sky-200 bg-sky-50 text-sky-900",
-  erro: "border-red-200 bg-red-50 text-red-900",
-  sucesso: "border-emerald-200 bg-emerald-50 text-emerald-900",
+  info: "!border-l-sky-500 text-sky-950",
+  erro: "!border-l-red-500 text-red-950",
+  sucesso: "!border-l-emerald-500 text-emerald-950",
 };
 
 export function Aviso({ tipo = "info", children }: Props) {
   return (
-    <div role={tipo === "erro" ? "alert" : "status"} className={`rounded-lg border px-4 py-3 text-sm ${ESTILOS[tipo]}`}>
+    <div
+      role={tipo === "erro" ? "alert" : "status"}
+      className={`vidro-forte animate-surgir rounded-2xl !border-l-4 px-4 py-3 text-sm font-medium ${ESTILOS[tipo]}`}
+    >
       {children}
     </div>
   );

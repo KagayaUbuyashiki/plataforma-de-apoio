@@ -36,7 +36,7 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
   return (
     <>
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="text-3xl font-bold">Avaliações</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Avaliações</h1>
         <div className="flex flex-wrap items-end gap-2">
           <form className="flex gap-2">
             <label htmlFor="turma" className="sr-only">Filtrar por turma</label>
@@ -56,23 +56,23 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className={cartao}>
-          <p className="text-sm text-slate-500">Avaliações recebidas</p>
-          <p className="mt-1 text-4xl font-bold text-marca-700">{r.avaliacoes.length}</p>
+          <p className="text-sm text-tinta-suave">Avaliações recebidas</p>
+          <p className="mt-1 text-4xl font-extrabold tracking-tight texto-aurora">{r.avaliacoes.length}</p>
         </div>
         <div className={cartao}>
-          <p className="text-sm text-slate-500">Nota geral média</p>
+          <p className="text-sm text-tinta-suave">Nota geral média</p>
           <p className="mt-1 text-4xl font-bold"><Nota v={r.mediaGeral} /></p>
         </div>
         <div className={cartao}>
-          <p className="text-sm text-slate-500">Comentários</p>
-          <p className="mt-1 text-4xl font-bold text-marca-700">{comentarios.length}</p>
+          <p className="text-sm text-tinta-suave">Comentários</p>
+          <p className="mt-1 text-4xl font-extrabold tracking-tight texto-aurora">{comentarios.length}</p>
         </div>
       </div>
 
       <section className={`${cartao} overflow-x-auto`}>
-        <h2 className="text-xl font-semibold">Por aula</h2>
+        <h2 className="text-xl font-extrabold">Por aula</h2>
         <table className="mt-3 w-full min-w-[32rem] text-left text-sm">
-          <thead className="border-b border-slate-200 text-slate-500">
+          <thead className="border-b border-white text-tinta-suave">
             <tr>
               <th className="py-2 pr-4 font-medium">Aula</th>
               <th className="py-2 pr-4 text-right font-medium">Respostas</th>
@@ -81,7 +81,7 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
               <th className="py-2 text-right font-medium">Ritmo</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/80">
             {r.porAula.map((l) => (
               <tr key={l.aula.id}>
                 <td className="py-2 pr-4">{l.aula.numero}. {l.aula.titulo}</td>
@@ -96,9 +96,9 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
       </section>
 
       <section className={`${cartao} overflow-x-auto`}>
-        <h2 className="text-xl font-semibold">Por instrutor</h2>
+        <h2 className="text-xl font-extrabold">Por instrutor</h2>
         <table className="mt-3 w-full min-w-[32rem] text-left text-sm">
-          <thead className="border-b border-slate-200 text-slate-500">
+          <thead className="border-b border-white text-tinta-suave">
             <tr>
               <th className="py-2 pr-4 font-medium">Instrutor</th>
               <th className="py-2 pr-4 text-right font-medium">Respostas</th>
@@ -107,7 +107,7 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
               <th className="py-2 text-right font-medium">Atenção</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/80">
             {r.porInstrutor.map((l) => (
               <tr key={l.instrutor.id}>
                 <td className="py-2 pr-4">{l.instrutor.nome}</td>
@@ -119,19 +119,19 @@ export default async function AdminAvaliacoes({ searchParams }: Props) {
             ))}
           </tbody>
         </table>
-        <p className="mt-3 text-xs text-slate-500">Notas de 1 a 5. Verde: 4 ou mais · Amarelo: de 3 a 4 · Vermelho: abaixo de 3.</p>
+        <p className="mt-3 text-xs text-tinta-suave">Notas de 1 a 5. Verde: 4 ou mais · Amarelo: de 3 a 4 · Vermelho: abaixo de 3.</p>
       </section>
 
       <section className={cartao}>
-        <h2 className="text-xl font-semibold">Comentários</h2>
+        <h2 className="text-xl font-extrabold">Comentários</h2>
         {comentarios.length === 0 ? (
-          <p className="mt-2 text-sm text-slate-500">Nenhum comentário ainda.</p>
+          <p className="mt-2 text-sm text-tinta-suave">Nenhum comentário ainda.</p>
         ) : (
           <ul className="mt-3 flex flex-col gap-3">
             {comentarios.map((c) => (
-              <li key={c.id} className="rounded-lg border border-slate-200 p-4">
-                <p className="whitespace-pre-line text-slate-800">“{c.texto}”</p>
-                <p className="mt-2 text-xs text-slate-500">
+              <li key={c.id} className="rounded-2xl border border-white bg-white/60 p-4">
+                <p className="whitespace-pre-line text-tinta">“{c.texto}”</p>
+                <p className="mt-2 text-xs text-tinta-suave">
                   Sobre: <strong>{c.alvo}</strong> · {nomeAula.get(c.a.aula_id)} · {nomeTurma.get(c.a.turma_id)} ·{" "}
                   {dataHora.format(new Date(c.a.created_at))}
                   {c.nota != null && <> · nota geral {c.nota}</>}

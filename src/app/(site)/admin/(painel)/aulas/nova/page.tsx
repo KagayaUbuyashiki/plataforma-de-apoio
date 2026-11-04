@@ -9,7 +9,7 @@ export default async function NovaAula() {
   const proximo = Math.max(0, ...aulas.map((a) => a.numero)) + 1;
   return (
     <>
-      <h1 className="text-3xl font-bold">Nova aula</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Nova aula</h1>
       <FormAula instrutores={instrutores} proximoNumero={proximo} />
     </>
   );

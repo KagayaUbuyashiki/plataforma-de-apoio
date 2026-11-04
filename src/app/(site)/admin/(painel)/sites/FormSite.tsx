@@ -70,11 +70,11 @@ export function FormSite({ site, categorias }: { site?: Site; categorias: string
               const f = e.target.files?.[0];
               setImagemLocal(f ? URL.createObjectURL(f) : null);
             }}
-            className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-marca-50 file:px-3 file:py-2 file:font-semibold file:text-marca-700 hover:file:bg-marca-100"
+            className="block w-full text-sm text-tinta-suave file:mr-3 file:rounded-md file:border-0 file:bg-marca-50 file:px-3 file:py-2 file:font-semibold file:text-marca-700 hover:file:bg-marca-100"
           />
-          <p className="mt-1 text-xs text-slate-500">Dica: tire um print da página inicial do site (proporção 16:9 fica melhor).</p>
+          <p className="mt-1 text-xs text-tinta-suave">Dica: tire um print da página inicial do site (proporção 16:9 fica melhor).</p>
           {site?.imagem_url && (
-            <label className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+            <label className="mt-2 flex items-center gap-2 text-sm text-tinta-suave">
               <input type="checkbox" name="remover_imagem" /> Remover a imagem atual
             </label>
           )}
@@ -122,7 +122,7 @@ export function FormSite({ site, categorias }: { site?: Site; categorias: string
       </form>
 
       <div>
-        <p className="mb-2 text-sm font-medium text-slate-500">Prévia do card</p>
+        <p className="mb-2 text-sm font-medium text-tinta-suave">Prévia do card</p>
         <div className="pointer-events-none">
           <SiteCard
             site={{

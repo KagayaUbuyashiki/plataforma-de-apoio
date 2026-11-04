@@ -18,7 +18,7 @@ export default async function EditarSite({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Editar site</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Editar site</h1>
       <FormSite site={site as Site} categorias={categorias} />
     </>
   );

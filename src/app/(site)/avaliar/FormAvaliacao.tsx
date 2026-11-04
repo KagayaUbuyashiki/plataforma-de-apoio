@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useActionState, useState, useTransition } from "react";
 import { Aviso } from "@/components/Aviso";
+import { botao, campo } from "@/components/admin/estilos";
+import { IconeCaixa } from "@/components/Icone";
 import { StarRating } from "@/components/StarRating";
 import { formatarData } from "@/lib/formatar";
 import { enviarSemLimpar } from "@/lib/formulario";
@@ -12,10 +14,6 @@ import { enviarAvaliacao, verificarCodigo, type EstadoEnvio } from "./actions";
 type Props = { aulas: AulaComInstrutores[]; aulaInicial?: string; avaliadas: string[] };
 type Etapa = "codigo" | "aula" | "notas";
 
-const campo =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-marca-500 focus:outline-none focus:ring-2 focus:ring-marca-500/30";
-const botao =
-  "rounded-lg bg-marca-600 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-marca-700 disabled:cursor-not-allowed disabled:opacity-60";
 
 export function FormAvaliacao({ aulas, aulaInicial, avaliadas }: Props) {
   const inicial = aulas.find((a) => a.id === aulaInicial)?.id ?? null;
@@ -46,11 +44,11 @@ export function FormAvaliacao({ aulas, aulaInicial, avaliadas }: Props) {
       <Progresso etapa={etapa} />
 
       {etapa === "codigo" && (
-        <form onSubmit={confirmarCodigo} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <label htmlFor="codigo" className="font-semibold text-slate-900">
+        <form onSubmit={confirmarCodigo} className="vidro-forte animate-surgir rounded-3xl p-6">
+          <label htmlFor="codigo" className="text-lg font-extrabold text-tinta">
             Código da turma
           </label>
-          <p className="mt-1 text-sm text-slate-500">O instrutor vai mostrar o código no quadro ou no projetor.</p>
+          <p className="mt-1 text-sm text-tinta-suave">O instrutor vai mostrar o código no quadro ou no projetor.</p>
           <input
             id="codigo"
             name="codigo"
@@ -74,11 +72,11 @@ export function FormAvaliacao({ aulas, aulaInicial, avaliadas }: Props) {
       )}
 
       {etapa === "aula" && (
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-500">
-            Turma: <strong className="text-slate-800">{turma}</strong>
+        <div className="vidro-forte animate-surgir rounded-3xl p-6">
+          <p className="text-sm text-tinta-suave">
+            Turma: <strong className="text-tinta">{turma}</strong>
           </p>
-          <h2 className="mt-2 font-semibold text-slate-900">Qual aula você quer avaliar?</h2>
+          <h2 className="mt-2 text-lg font-extrabold text-tinta">Qual aula você quer avaliar?</h2>
           <ul className="mt-4 flex flex-col gap-2">
             {aulas.map((a) => (
               <li key={a.id}>
@@ -88,14 +86,14 @@ export function FormAvaliacao({ aulas, aulaInicial, avaliadas }: Props) {
                     setAulaId(a.id);
                     setEtapa("notas");
                   }}
-                  className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition hover:border-marca-500 hover:bg-marca-50"
+                  className="flex w-full items-center gap-3 rounded-2xl border border-white bg-white/60 p-3 text-left transition hover:-translate-y-0.5 hover:bg-white"
                 >
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-marca-50 font-mono font-bold text-marca-700">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[linear-gradient(135deg,#0ea5c6,#6366f1)] font-mono font-bold text-white">
                     {a.numero}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block font-medium text-slate-900">{a.titulo}</span>
-                    {a.data && <span className="block text-sm text-slate-500">{formatarData(a.data)}</span>}
+                    <span className="block font-bold text-tinta">{a.titulo}</span>
+                    {a.data && <span className="block text-sm text-tinta-suave">{formatarData(a.data)}</span>}
                   </span>
                   {jaAvaliadas.includes(a.id) && (
                     <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
@@ -136,18 +134,18 @@ function Progresso({ etapa }: { etapa: Etapa }) {
   ];
   const atual = etapas.findIndex((e) => e.id === etapa);
   return (
-    <ol className="flex items-center gap-2 text-sm" aria-label="Etapas">
+    <ol className="flex flex-wrap items-center gap-1.5 text-sm sm:gap-2" aria-label="Etapas">
       {etapas.map((e, i) => (
-        <li key={e.id} className="flex items-center gap-2" aria-current={i === atual ? "step" : undefined}>
+        <li key={e.id} className="flex items-center gap-1.5 sm:gap-2" aria-current={i === atual ? "step" : undefined}>
           <span
-            className={`grid h-7 w-7 place-items-center rounded-full font-semibold ${
-              i <= atual ? "bg-marca-600 text-white" : "bg-slate-200 text-slate-500"
-            }`}
+            className={`grid h-8 w-8 place-items-center rounded-full font-extrabold transition duration-500 ${
+              i <= atual ? "bg-[linear-gradient(135deg,#0ea5c6,#6366f1)] text-white shadow-[0_8px_16px_-8px_#6366f1]" : "bg-white/70 text-tinta-suave"
+            } ${i === atual ? "scale-110" : ""}`}
           >
             {i + 1}
           </span>
-          <span className={i <= atual ? "font-medium text-slate-900" : "text-slate-500"}>{e.rotulo}</span>
-          {i < etapas.length - 1 && <span className="mx-1 h-px w-6 bg-slate-300" aria-hidden />}
+          <span className={i <= atual ? "font-bold text-tinta" : "font-medium text-tinta-suave"}>{e.rotulo}</span>
+          {i < etapas.length - 1 && <span className={`mx-0.5 h-0.5 w-4 rounded-full sm:mx-1 sm:w-8 transition duration-500 ${i < atual ? "bg-marca-500" : "bg-white"}`} aria-hidden />}
         </li>
       ))}
     </ol>
@@ -173,10 +171,10 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
 
   if (estado.ok) {
     return (
-      <div className="rounded-xl border border-emerald-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-5xl" aria-hidden>🎉</p>
-        <h2 className="mt-3 text-2xl font-bold text-slate-900">Obrigado pela avaliação!</h2>
-        <p className="mt-2 text-slate-600">Sua opinião ajuda a melhorar as próximas aulas.</p>
+      <div className="vidro-forte animate-surgir rounded-3xl p-8 text-center">
+        <IconeCaixa nome="festa" cor="linear-gradient(135deg,#f59e0b,#ec4899)" tamanho={64} className="mx-auto animate-flutuar" />
+        <h2 className="mt-5 text-2xl font-extrabold tracking-tight text-tinta">Obrigado pela avaliação!</h2>
+        <p className="mt-2 text-tinta-suave">Sua opinião ajuda a melhorar as próximas aulas.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href={`/aulas/${aula.slug}`} className={botao}>
             Ver o resumo da aula
@@ -184,7 +182,7 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
           <button
             type="button"
             onClick={onNovaAvaliacao}
-            className="rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-semibold text-slate-700 hover:border-marca-500"
+            className="btn-secundario"
           >
             Outra pessoa vai avaliar neste aparelho
           </button>
@@ -198,12 +196,12 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
       <input type="hidden" name="codigo" value={codigo} />
       <input type="hidden" name="aula_id" value={aula.id} />
 
-      <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-tinta-suave">
         <span>
-          Turma <strong className="text-slate-800">{turma}</strong> · Aula {aula.numero}:{" "}
-          <strong className="text-slate-800">{aula.titulo}</strong>
+          Turma <strong className="text-tinta">{turma}</strong> · Aula {aula.numero}:{" "}
+          <strong className="text-tinta">{aula.titulo}</strong>
         </span>
-        <button type="button" onClick={onTrocarAula} className="font-medium text-marca-700 hover:underline">
+        <button type="button" onClick={onTrocarAula} className="btn-secundario !px-3.5 !py-1.5">
           Trocar aula
         </button>
       </div>
@@ -215,13 +213,13 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
         </Aviso>
       )}
 
-      <section className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-slate-900">Sobre a aula</h2>
+      <section className="vidro-forte flex animate-surgir flex-col gap-5 rounded-3xl p-6">
+        <h2 className="text-lg font-extrabold text-tinta">Sobre a aula</h2>
         <StarRating nome="nota_geral" rotulo="Nota geral da aula" />
         <StarRating nome="nota_conteudo" rotulo="Conteúdo" descricao="O que foi ensinado foi útil e fácil de entender?" />
         <StarRating nome="nota_ritmo" rotulo="Ritmo" descricao="A velocidade da aula foi boa para você acompanhar?" />
         <div>
-          <label htmlFor="comentario" className="font-medium text-slate-800">
+          <label htmlFor="comentario" className="font-bold text-tinta">
             Comentário (opcional)
           </label>
           <textarea
@@ -236,14 +234,14 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
       </section>
 
       {aula.instrutores.map((inst) => (
-        <section key={inst.id} className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section key={inst.id} className="vidro-forte flex animate-surgir flex-col gap-5 rounded-3xl p-6">
           <input type="hidden" name="instrutor_ids" value={inst.id} />
-          <h2 className="text-lg font-bold text-slate-900">Sobre {inst.nome}</h2>
+          <h2 className="text-lg font-extrabold text-tinta">Sobre {inst.nome}</h2>
           <StarRating nome={`inst_${inst.id}_clareza`} rotulo="Clareza" descricao="Explicou de um jeito fácil de entender?" />
           <StarRating nome={`inst_${inst.id}_dominio`} rotulo="Domínio do conteúdo" descricao="Mostrou que conhece bem o assunto?" />
           <StarRating nome={`inst_${inst.id}_atencao`} rotulo="Atenção e paciência" descricao="Tirou suas dúvidas e te ajudou quando precisou?" />
           <div>
-            <label htmlFor={`inst_${inst.id}_comentario`} className="font-medium text-slate-800">
+            <label htmlFor={`inst_${inst.id}_comentario`} className="font-bold text-tinta">
               Recado para {inst.nome} (opcional)
             </label>
             <textarea
@@ -259,7 +257,7 @@ function FormNotas({ aula, codigo, turma, jaAvaliada, onTrocarAula, onEnviado, o
 
       {estado.erro && <Aviso tipo="erro">{estado.erro}</Aviso>}
 
-      <button type="submit" disabled={enviando} className={`${botao} self-start text-lg`}>
+      <button type="submit" disabled={enviando} className={`${botao} self-start !px-7 !py-3.5 !text-base`}>
         {enviando ? "Enviando…" : "Enviar avaliação"}
       </button>
     </form>

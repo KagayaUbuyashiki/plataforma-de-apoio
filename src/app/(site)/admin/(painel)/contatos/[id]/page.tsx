@@ -13,7 +13,7 @@ export default async function EditarContato({ params }: { params: Promise<{ id: 
   if (!data) notFound();
   return (
     <>
-      <h1 className="text-3xl font-bold">Editar contato</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Editar contato</h1>
       <FormContato contato={data as Contato} />
     </>
   );

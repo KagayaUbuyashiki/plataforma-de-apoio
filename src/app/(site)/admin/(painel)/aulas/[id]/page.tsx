@@ -12,7 +12,7 @@ export default async function EditarAula({ params }: { params: Promise<{ id: str
   if (!aula) notFound();
   return (
     <>
-      <h1 className="text-3xl font-bold">Editar aula {aula.numero}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Editar aula {aula.numero}</h1>
       <FormAula aula={aula} instrutores={instrutores} proximoNumero={aula.numero} />
     </>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Aviso } from "@/components/Aviso";
+import { Icone, IconeCaixa } from "@/components/Icone";
 import { SiteCard } from "@/components/SiteCard";
 import { Titulo } from "@/components/Titulo";
 import { getOds } from "@/data/ods";
@@ -23,8 +24,8 @@ export default async function Sites({ searchParams }: Props) {
   );
 
   const filtro = (ativo: boolean) =>
-    `rounded-full border px-3 py-1 text-sm font-medium transition ${
-      ativo ? "border-marca-600 bg-marca-600 text-white" : "border-slate-300 bg-white text-slate-700 hover:border-marca-500"
+    `rounded-full border px-4 py-1.5 text-sm font-bold transition duration-300 ${
+      ativo ? "border-tinta bg-tinta text-white shadow-[0_8px_18px_-10px_rgb(12_27_42/0.7)]" : "border-white bg-white/60 text-tinta-suave backdrop-blur hover:-translate-y-0.5 hover:bg-white hover:text-tinta"
     }`;
 
   return (
@@ -37,7 +38,7 @@ export default async function Sites({ searchParams }: Props) {
       {erro && <Aviso tipo="erro">Não foi possível carregar os sites: {erro}</Aviso>}
 
       {(categorias.length > 0 || odsUsados.length > 0) && (
-        <div className="mb-6 flex flex-wrap gap-2" aria-label="Filtros">
+        <div data-revelar className="mb-8 flex flex-wrap gap-2" aria-label="Filtros">
           <Link href="/sites" className={filtro(!categoria && !ods)}>
             Todos
           </Link>
@@ -55,19 +56,19 @@ export default async function Sites({ searchParams }: Props) {
       )}
 
       {!erro && filtrados.length === 0 ? (
-        <div className="rounded-xl border-2 border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-          <p className="text-4xl" aria-hidden>🌐</p>
-          <h2 className="mt-3 text-lg font-semibold">Nenhum site ainda</h2>
-          <p className="mt-1 text-slate-600">Os sites apresentados nas aulas vão aparecer aqui.</p>
-          <Link href="/admin/sites" className="mt-4 inline-block text-sm font-semibold text-marca-700 hover:underline">
-            Sou instrutor: adicionar um site →
+        <div data-revelar className="vidro rounded-3xl border-dashed px-6 py-16 text-center">
+          <IconeCaixa nome="globo" cor="#14b8a6" tamanho={56} className="mx-auto" />
+          <h2 className="mt-4 text-lg font-extrabold">Nenhum site ainda</h2>
+          <p className="mt-1 font-medium text-tinta-suave">Os sites apresentados nas aulas vão aparecer aqui.</p>
+          <Link href="/admin/sites" className="group mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-marca-600">
+            Sou instrutor: adicionar um site <Icone nome="seta" tamanho={14} espessura={2.2} className="seta-anda" />
           </Link>
         </div>
       ) : (
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtrados.map((s) => (
+          {filtrados.map((s, i) => (
             <li key={s.id}>
-              <SiteCard site={s} />
+              <SiteCard site={s} atraso={i % 3} />
             </li>
           ))}
         </ul>

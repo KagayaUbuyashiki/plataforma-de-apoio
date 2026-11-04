@@ -26,20 +26,20 @@ export default async function Painel() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Painel do instrutor</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Painel do instrutor</h1>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {itens.map((i) => (
-          <Link key={i.href} href={i.href} className={`${cartao} transition hover:border-marca-500`}>
-            <p className="text-sm font-medium text-slate-500">{i.titulo}</p>
-            <p className="mt-1 text-4xl font-bold text-marca-700">{i.total}</p>
-            <p className="mt-2 text-sm text-slate-600">{i.texto}</p>
+          <Link key={i.href} href={i.href} className={`${cartao} transition duration-500 hover:-translate-y-1 hover:bg-white/90`}>
+            <p className="text-sm font-medium text-tinta-suave">{i.titulo}</p>
+            <p className="mt-1 text-4xl font-extrabold tracking-tight texto-aurora">{i.total}</p>
+            <p className="mt-2 text-sm text-tinta-suave">{i.texto}</p>
           </Link>
         ))}
       </div>
       <div className={cartao}>
         <h2 className="font-semibold">Dica para o fim da aula</h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Projete o endereço <code className="rounded bg-slate-100 px-1">/avaliar</code> e o código da turma no quadro. Os alunos
+        <p className="mt-1 text-sm text-tinta-suave">
+          Projete o endereço <code className="rounded-md bg-white/80 px-1.5 font-semibold">/avaliar</code> e o código da turma no quadro. Os alunos
           avaliam em 1 minuto, de forma anônima, pelo celular ou pelo computador.
         </p>
       </div>

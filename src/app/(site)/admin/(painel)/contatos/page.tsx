@@ -17,7 +17,7 @@ export default async function AdminContatos({ searchParams }: { searchParams: Pr
   return (
     <>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold">Contatos</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Contatos</h1>
         <Link href="/contatos" className={botaoSecundario}>Ver página pública</Link>
       </div>
 
@@ -25,24 +25,24 @@ export default async function AdminContatos({ searchParams }: { searchParams: Pr
       {erro && <Aviso tipo="erro">{erro}</Aviso>}
 
       <section>
-        <h2 className="mb-3 text-xl font-semibold">Adicionar contato</h2>
+        <h2 className="mb-3 text-xl font-extrabold">Adicionar contato</h2>
         <FormContato />
       </section>
 
       <section className={cartao}>
-        <h2 className="text-xl font-semibold">Contatos cadastrados ({contatos.length})</h2>
+        <h2 className="text-xl font-extrabold">Contatos cadastrados ({contatos.length})</h2>
         {contatos.length === 0 ? (
-          <p className="mt-2 text-sm text-slate-500">Nenhum contato ainda.</p>
+          <p className="mt-2 text-sm text-tinta-suave">Nenhum contato ainda.</p>
         ) : (
-          <ul className="mt-4 divide-y divide-slate-200">
+          <ul className="mt-4 divide-y divide-white/80">
             {contatos.map((c) => (
               <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                 <div className="min-w-0">
                   <p className="font-medium">
                     {c.nome}
-                    {c.funcao && <span className="font-normal text-slate-500"> · {c.funcao}</span>}
+                    {c.funcao && <span className="font-normal text-tinta-suave"> · {c.funcao}</span>}
                   </p>
-                  <p className="truncate text-sm text-slate-500">
+                  <p className="truncate text-sm text-tinta-suave">
                     {[c.email, c.telefone && `${formatarTelefone(c.telefone)}${c.whatsapp ? " (WhatsApp)" : ""}`, c.link].filter(Boolean).join(" · ")}
                   </p>
                 </div>

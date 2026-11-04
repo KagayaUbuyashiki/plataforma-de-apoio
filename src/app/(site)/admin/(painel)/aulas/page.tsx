@@ -16,7 +16,7 @@ export default async function AdminAulas({ searchParams }: { searchParams: Promi
   return (
     <>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold">Aulas</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Aulas</h1>
         <Link href="/admin/aulas/nova" className={botao}>+ Nova aula</Link>
       </div>
       {salvo && <Aviso tipo="sucesso">Aula salva com sucesso!</Aviso>}
@@ -24,9 +24,9 @@ export default async function AdminAulas({ searchParams }: { searchParams: Promi
 
       <section className={cartao}>
         {aulas.length === 0 ? (
-          <p className="text-sm text-slate-500">Nenhuma aula cadastrada.</p>
+          <p className="text-sm text-tinta-suave">Nenhuma aula cadastrada.</p>
         ) : (
-          <ul className="divide-y divide-slate-200">
+          <ul className="divide-y divide-white/80">
             {aulas.map((a) => (
               <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                 <div className="min-w-0">
@@ -34,13 +34,13 @@ export default async function AdminAulas({ searchParams }: { searchParams: Promi
                     {a.numero}. {a.titulo}{" "}
                     <span
                       className={`ml-1 rounded-full px-2 py-0.5 text-xs font-medium ${
-                        a.publicada ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
+                        a.publicada ? "bg-emerald-50 text-emerald-700" : "bg-white/70 text-tinta-suave"
                       }`}
                     >
                       {a.publicada ? "publicada" : "rascunho"}
                     </span>
                   </p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-tinta-suave">
                     /aulas/{a.slug}
                     {a.data && <> · {formatarData(a.data)}</>}
                     {a.instrutores.length > 0 && <> · {a.instrutores.map((i) => i.nome).join(", ")}</>}

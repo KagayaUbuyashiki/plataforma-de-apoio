@@ -1,16 +1,17 @@
 import Link from "next/link";
+import { Icone, IconeCaixa, type NomeIcone } from "@/components/Icone";
 import { OdsCard } from "@/components/OdsCard";
 import { ODS } from "@/data/ods";
 import { listarAulas } from "@/lib/dados";
 
 export const dynamic = "force-dynamic";
 
-const ATALHOS = [
-  { href: "/aulas", titulo: "Aulas", texto: "Resumos, códigos de exemplo e materiais de cada encontro.", icone: "📚" },
-  { href: "/editor", titulo: "Editor de código", texto: "Crie o seu site num editor igual ao VS Code, com prévia ao vivo.", icone: "💻" },
-  { href: "/sites", titulo: "Sites de referência", texto: "Sites que apresentamos em aula para inspirar o seu projeto.", icone: "🌐" },
-  { href: "/ods", titulo: "Os 17 ODS", texto: "Entenda cada objetivo e encontre ideias para o tema do seu site.", icone: "🎯" },
-  { href: "/avaliar", titulo: "Avaliar aula", texto: "Dê sua opinião, de forma anônima, sobre a aula e os instrutores.", icone: "⭐" },
+const ATALHOS: { href: string; titulo: string; texto: string; icone: NomeIcone; cor: string }[] = [
+  { href: "/aulas", titulo: "Aulas", texto: "Resumos, códigos de exemplo e materiais de cada encontro.", icone: "livro", cor: "#0ea5c6" },
+  { href: "/editor", titulo: "Editor de código", texto: "Crie o seu site num editor igual ao VS Code, com prévia ao vivo.", icone: "codigo", cor: "#6366f1" },
+  { href: "/sites", titulo: "Sites de referência", texto: "Sites que apresentamos em aula para inspirar o seu projeto.", icone: "globo", cor: "#14b8a6" },
+  { href: "/ods", titulo: "Os 17 ODS", texto: "Entenda cada objetivo e encontre ideias para o tema do seu site.", icone: "alvo", cor: "#ec4899" },
+  { href: "/avaliar", titulo: "Avaliar aula", texto: "Dê sua opinião, de forma anônima, sobre a aula e os instrutores.", icone: "estrela", cor: "#f59e0b" },
 ];
 
 const ETAPAS = [
@@ -20,31 +21,76 @@ const ETAPAS = [
   { titulo: "Apresente", texto: "Mostre o seu site para a banca de voluntários e celebre na formatura!" },
 ];
 
+const d = (n: number) => ({ "--d": n }) as React.CSSProperties;
+
 export default async function Inicio() {
   const { dados: aulas } = await listarAulas();
   const ultima = aulas.filter((a) => a.publicada).at(-1);
 
   return (
-    <div className="flex flex-col gap-16">
-      <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-marca-900 via-marca-700 to-marca-500 px-6 py-12 text-white sm:px-12 sm:py-16">
-        <p className="font-mono text-sm text-marca-100">&lt;h1&gt;Bem-vindo(a)!&lt;/h1&gt;</p>
-        <h1 className="mt-3 max-w-3xl text-3xl font-bold leading-tight sm:text-5xl">
-          Tudo o que você precisa para criar o seu primeiro site
+    <div className="flex flex-col gap-20 sm:gap-24">
+      <section className="relative px-2 pb-6 pt-8 text-center sm:pt-16">
+        {/* Cartões flutuantes (decorativos, só em telas grandes) */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+          <div className="vidro absolute -left-4 top-0 animate-flutuar rounded-2xl px-4 py-3 text-left">
+            <div className="flex items-center gap-3">
+              <IconeCaixa nome="livro" cor="linear-gradient(135deg,#0ea5c6,#6366f1)" tamanho={38} />
+              <div className="max-w-44">
+                <b className="block text-sm">{ultima ? `Aula ${ultima.numero}` : "Aulas"}</b>
+                <small className="block truncate font-medium text-tinta-suave">{ultima ? ultima.titulo : "Resumos de cada encontro"}</small>
+              </div>
+            </div>
+          </div>
+          <div className="vidro absolute right-0 top-10 animate-flutuar rounded-2xl px-4 py-3 text-left [animation-delay:-2s]">
+            <div className="flex items-center gap-3">
+              <span className="grid h-[38px] w-[38px] place-items-center rounded-xl bg-[#0A97D9] text-sm font-extrabold text-white">17</span>
+              <div>
+                <b className="block text-sm">Objetivos da ONU</b>
+                <small className="block font-medium text-tinta-suave">temas para o seu site</small>
+              </div>
+            </div>
+          </div>
+          <div className="vidro absolute bottom-0 left-12 animate-flutuar rounded-2xl px-4 py-3 text-left [animation-delay:-4s]">
+            <b className="block text-sm tracking-[2px] text-amber-500">★★★★★</b>
+            <small className="block font-medium text-tinta-suave">Avaliação anônima</small>
+          </div>
+          <div className="vidro absolute bottom-6 right-8 animate-flutuar rounded-2xl px-4 py-3 text-left [animation-delay:-1s]">
+            <div className="flex items-center gap-3">
+              <IconeCaixa nome="check" cor="#12b76a" tamanho={38} />
+              <div>
+                <b className="block text-sm">Prévia ao vivo</b>
+                <small className="block font-medium text-tinta-suave">index.html · style.css</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span className="chip" data-revelar>
+          <Icone nome="brilho" tamanho={14} espessura={2.2} /> Programa Meu Primeiro Site · Rio Pomba Valley
+        </span>
+        <h1
+          data-revelar
+          style={d(1)}
+          className="mx-auto mt-6 max-w-4xl text-[2.6rem] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[68px]"
+        >
+          Tudo o que você precisa para criar o seu <span className="texto-aurora">primeiro site</span>
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-marca-100">
+        <p data-revelar style={d(2)} className="mx-auto mt-6 max-w-xl text-lg font-medium leading-relaxed text-tinta-suave">
           Resumos das aulas, sites de inspiração, os temas dos ODS e um espaço para você avaliar cada encontro.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div data-revelar style={d(3)} className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           {ultima ? (
-            <Link href={`/aulas/${ultima.slug}`} className="rounded-md bg-white px-5 py-3 font-semibold text-marca-900 hover:bg-marca-50">
+            <Link href={`/aulas/${ultima.slug}`} className="btn-primario group">
               Ver a última aula: {ultima.titulo}
+              <Icone nome="seta" tamanho={16} espessura={2.2} className="seta-anda" />
             </Link>
           ) : (
-            <Link href="/aulas" className="rounded-md bg-white px-5 py-3 font-semibold text-marca-900 hover:bg-marca-50">
+            <Link href="/aulas" className="btn-primario group">
               Ver as aulas
+              <Icone nome="seta" tamanho={16} espessura={2.2} className="seta-anda" />
             </Link>
           )}
-          <Link href="/ods" className="rounded-md border border-white/40 px-5 py-3 font-semibold text-white hover:bg-white/10">
+          <Link href="/ods" className="btn-secundario">
             Explorar os ODS
           </Link>
         </div>
@@ -53,24 +99,32 @@ export default async function Inicio() {
       <section aria-labelledby="atalhos">
         <h2 id="atalhos" className="sr-only">Atalhos</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {ATALHOS.map((a) => (
+          {ATALHOS.map((a, i) => (
             <Link
               key={a.href}
               href={a.href}
-              className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-marca-500 hover:shadow-md"
+              data-revelar
+              style={d(i)}
+              className="vidro group flex items-start gap-4 rounded-3xl p-5 transition duration-500 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-2 hover:bg-white/85 lg:block lg:p-6"
             >
-              <span className="text-3xl" aria-hidden>{a.icone}</span>
-              <h3 className="mt-3 font-semibold text-slate-900 group-hover:text-marca-700">{a.titulo}</h3>
-              <p className="mt-1 text-sm text-slate-600">{a.texto}</p>
+              <IconeCaixa nome={a.icone} cor={a.cor} className="transition duration-500 group-hover:-rotate-6 group-hover:scale-105" />
+              <div>
+                <h3 className="text-[17px] font-extrabold tracking-tight lg:mt-5">{a.titulo}</h3>
+                <p className="mt-1.5 text-sm font-medium leading-relaxed text-tinta-suave lg:mt-2">{a.texto}</p>
+                <span className="mt-4 hidden items-center gap-1.5 text-sm font-bold text-marca-600 opacity-0 transition duration-300 group-hover:opacity-100 lg:flex">
+                  Acessar <Icone nome="seta" tamanho={14} espessura={2.2} className="seta-anda" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="grid gap-10 lg:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900">O que é o Meu Primeiro Site?</h2>
-          <div className="mt-4 space-y-3 text-slate-700">
+      <section className="grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+        <div data-revelar className="vidro rounded-[28px] p-7 sm:p-10">
+          <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-marca-600">O programa</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-[42px] sm:leading-[1.1]">O que é o Meu Primeiro Site?</h2>
+          <div className="mt-4 space-y-4 font-medium leading-relaxed text-[#2b3a4a]">
             <p>
               O <strong>Meu Primeiro Site</strong> é um programa da <strong>Junior Achievement Brasil</strong> em parceria com o{" "}
               <strong>Instituto Energisa</strong>, que mostra que qualquer pessoa pode aprender a programar.
@@ -86,28 +140,42 @@ export default async function Inicio() {
             </p>
           </div>
         </div>
-        <ol className="grid gap-3 sm:grid-cols-2">
+        <ol data-revelar style={d(2)} className="vidro grid gap-3.5 rounded-[28px] p-3.5 sm:grid-cols-2">
           {ETAPAS.map((e, i) => (
-            <li key={e.titulo} className="rounded-xl border border-slate-200 bg-white p-5">
-              <span className="font-mono text-sm font-bold text-marca-600">Etapa {i + 1}</span>
-              <h3 className="mt-1 font-semibold">{e.titulo}</h3>
-              <p className="mt-1 text-sm text-slate-600">{e.texto}</p>
+            <li
+              key={e.titulo}
+              className="rounded-[20px] border border-white bg-white/70 p-6 transition duration-500 hover:scale-[1.02] hover:bg-white/90"
+            >
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,#0ea5c6,#6366f1)] text-sm font-extrabold text-white">
+                {i + 1}
+              </span>
+              <h3 className="mt-4 font-extrabold">{e.titulo}</h3>
+              <p className="mt-1.5 text-sm font-medium leading-relaxed text-tinta-suave">{e.texto}</p>
             </li>
           ))}
         </ol>
       </section>
 
       <section>
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-bold text-slate-900">Os 17 ODS</h2>
-          <Link href="/ods" className="text-sm font-semibold text-marca-700 hover:underline">
-            Ver todos →
-          </Link>
+        <div data-revelar className="mx-auto max-w-2xl text-center">
+          <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-marca-600">Temas</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.04em] sm:text-[42px]">Os 17 ODS</h2>
+          <p className="mt-3 text-lg font-medium text-tinta-suave">Escolha o objetivo que vai guiar o seu site.</p>
         </div>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 lg:grid-cols-9">
-          {ODS.map((o) => (
-            <OdsCard key={o.numero} ods={o} compacto />
-          ))}
+        <div className="vidro mt-10 rounded-[32px] p-4 sm:p-7">
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6 lg:grid-cols-9">
+            {ODS.map((o, i) => (
+              <OdsCard key={o.numero} ods={o} compacto atraso={(i % 9) * 0.5} />
+            ))}
+            <Link
+              href="/ods"
+              data-revelar
+              style={d(4)}
+              className="group flex aspect-square flex-col items-center justify-center gap-1 rounded-[18px] border border-dashed border-[#b7c6d3] bg-white/70 text-sm font-bold text-tinta-suave transition hover:bg-white hover:text-tinta"
+            >
+              Ver todos <Icone nome="seta" tamanho={16} espessura={2.2} className="seta-anda" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

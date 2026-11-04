@@ -26,8 +26,8 @@ export default async function Login() {
 
   return (
     <div className="mx-auto max-w-sm py-8">
-      <h1 className="text-2xl font-bold">Área do instrutor</h1>
-      <p className="mt-1 text-sm text-slate-600">Acesso restrito aos instrutores e voluntários do programa.</p>
+      <h1 className="text-2xl font-extrabold tracking-tight">Área do instrutor</h1>
+      <p className="mt-1 text-sm text-tinta-suave">Acesso restrito aos instrutores e voluntários do programa.</p>
       {!supabaseConfigurado() && (
         <div className="mt-4">
           <Aviso tipo="erro">O Supabase ainda não foi configurado. Siga o passo a passo do README. Diagnóstico: {diagnosticoSupabase()}.</Aviso>

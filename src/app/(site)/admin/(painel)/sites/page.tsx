@@ -19,7 +19,7 @@ export default async function AdminSites({ searchParams }: Props) {
   return (
     <>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold">Sites de referência</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Sites de referência</h1>
         <Link href="/sites" className={botaoSecundario}>Ver página pública</Link>
       </div>
 
@@ -27,21 +27,21 @@ export default async function AdminSites({ searchParams }: Props) {
       {erro && <Aviso tipo="erro">{erro}</Aviso>}
 
       <section>
-        <h2 className="mb-3 text-xl font-semibold">Adicionar site</h2>
+        <h2 className="mb-3 text-xl font-extrabold">Adicionar site</h2>
         <FormSite categorias={categorias} />
       </section>
 
       <section className={cartao}>
-        <h2 className="text-xl font-semibold">Sites cadastrados ({sites.length})</h2>
+        <h2 className="text-xl font-extrabold">Sites cadastrados ({sites.length})</h2>
         {sites.length === 0 ? (
-          <p className="mt-2 text-sm text-slate-500">Nenhum site ainda.</p>
+          <p className="mt-2 text-sm text-tinta-suave">Nenhum site ainda.</p>
         ) : (
-          <ul className="mt-4 divide-y divide-slate-200">
+          <ul className="mt-4 divide-y divide-white/80">
             {sites.map((s) => (
               <li key={s.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                 <div className="min-w-0">
                   <p className="font-medium">{s.titulo}</p>
-                  <p className="truncate text-sm text-slate-500">{s.url}</p>
+                  <p className="truncate text-sm text-tinta-suave">{s.url}</p>
                 </div>
                 <div className="flex gap-2">
                   <Link href={`/admin/sites/${s.id}`} className={botaoSecundario}>Editar</Link>

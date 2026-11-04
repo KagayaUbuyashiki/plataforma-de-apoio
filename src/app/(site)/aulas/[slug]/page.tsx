@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Aviso } from "@/components/Aviso";
+import { Icone, IconeCaixa } from "@/components/Icone";
 import { Markdown } from "@/components/Markdown";
 import { buscarAula } from "@/lib/dados";
 import { formatarData } from "@/lib/formatar";
@@ -23,65 +24,74 @@ export default async function AulaDetalhe({ params }: Props) {
   return (
     <article className="grid gap-8 lg:grid-cols-[1fr_18rem]">
       <div className="min-w-0">
-        <Link href="/aulas" className="text-sm font-medium text-marca-700 hover:underline">
-          ← Todas as aulas
+        <Link href="/aulas" className="btn-secundario group !px-4 !py-2">
+          <Icone nome="setaVoltar" tamanho={16} espessura={2.2} className="transition group-hover:-translate-x-1" /> Todas as aulas
         </Link>
-        <p className="mt-6 font-mono text-sm font-bold text-marca-600">
-          Aula {aula.numero}
-          {aula.data && <span className="font-sans font-normal text-slate-500"> · {formatarData(aula.data)}</span>}
-        </p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{aula.titulo}</h1>
+        <div data-revelar className="mt-8">
+          <span className="chip">
+            Aula {aula.numero}
+            {aula.data && <span className="font-semibold text-tinta-suave"> · {formatarData(aula.data)}</span>}
+          </span>
+          <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em] sm:text-5xl">{aula.titulo}</h1>
+        </div>
         {!aula.publicada && (
           <div className="mt-4">
             <Aviso>Esta aula ainda não está publicada; só instrutores conseguem vê-la.</Aviso>
           </div>
         )}
         {aula.resumo_md && (
-          <div className="mt-6 rounded-xl border-l-4 border-marca-500 bg-marca-50 p-5">
+          <div data-revelar style={{ "--d": 1 } as React.CSSProperties} className="vidro mt-8 rounded-3xl !border-l-4 !border-l-marca-500 p-6">
             <Markdown>{aula.resumo_md}</Markdown>
           </div>
         )}
         {aula.conteudo_md && (
-          <div className="mt-8">
+          <div data-revelar style={{ "--d": 2 } as React.CSSProperties} className="vidro-forte mt-6 rounded-3xl p-6 sm:p-10">
             <Markdown>{aula.conteudo_md}</Markdown>
           </div>
         )}
       </div>
 
-      <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
+      <aside data-revelar style={{ "--d": 3 } as React.CSSProperties} className="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
         <Link
           href={`/avaliar?aula=${aula.id}`}
-          className="rounded-xl bg-marca-600 p-5 text-white shadow-sm transition hover:bg-marca-700"
+          className="group rounded-3xl bg-[linear-gradient(135deg,#0b7a92,#4f46e5)] p-6 text-white shadow-[0_20px_40px_-20px_#4f46e5] transition duration-500 hover:-translate-y-1"
         >
-          <span className="text-2xl" aria-hidden>⭐</span>
-          <p className="mt-1 font-semibold">Avaliar esta aula</p>
-          <p className="text-sm text-marca-100">É anônimo e leva 1 minuto.</p>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/20 transition duration-500 group-hover:rotate-12">
+            <Icone nome="estrela" tamanho={20} espessura={2} />
+          </span>
+          <p className="mt-3 font-extrabold">Avaliar esta aula</p>
+          <p className="text-sm font-medium text-white/80">É anônimo e leva 1 minuto.</p>
         </Link>
 
         <Link
           href="/editor"
-          className="rounded-xl border border-slate-200 bg-[#1e1e1e] p-5 text-white shadow-sm transition hover:border-marca-500"
+          className="group rounded-3xl bg-tinta p-6 text-white shadow-[0_20px_40px_-20px_rgb(12_27_42/0.8)] transition duration-500 hover:-translate-y-1"
         >
-          <span className="font-mono text-sm text-[#569cd6]" aria-hidden>&lt;/&gt;</span>
-          <p className="mt-1 font-semibold">Praticar no editor</p>
-          <p className="text-sm text-slate-300">Teste o código da aula e veja o resultado ao vivo.</p>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 font-mono text-sm text-[#7dd3fc]" aria-hidden>&lt;/&gt;</span>
+          <p className="mt-3 font-extrabold">Praticar no editor</p>
+          <p className="text-sm font-medium text-slate-300">Teste o código da aula e veja o resultado ao vivo.</p>
         </Link>
 
         {aula.instrutores.length > 0 && (
-          <section className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold">Instrutores</h2>
-            <ul className="mt-2 space-y-1 text-sm text-slate-700">
+          <section className="vidro rounded-3xl p-6">
+            <h2 className="font-extrabold">Instrutores</h2>
+            <ul className="mt-3 space-y-2 text-sm font-semibold text-tinta">
               {aula.instrutores.map((i) => (
-                <li key={i.id}>{i.nome}</li>
+                <li key={i.id} className="flex items-center gap-2.5">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-marca-100 text-xs font-extrabold text-marca-700" aria-hidden>
+                    {i.nome.trim().charAt(0).toUpperCase()}
+                  </span>
+                  {i.nome}
+                </li>
               ))}
             </ul>
           </section>
         )}
 
         {aula.materiais.length > 0 && (
-          <section className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold">Materiais</h2>
-            <ul className="mt-2 space-y-2 text-sm">
+          <section className="vidro rounded-3xl p-6">
+            <h2 className="font-extrabold">Materiais</h2>
+            <ul className="mt-3 space-y-2 text-sm">
               {aula.materiais.map((m) => {
                 const externo = /^https?:\/\//.test(m.url);
                 return (
@@ -89,10 +99,11 @@ export default async function AulaDetalhe({ params }: Props) {
                     <a
                       href={m.url}
                       {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="font-medium text-marca-700 hover:underline"
+                      className="group flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2.5 font-bold text-tinta transition hover:bg-white hover:text-marca-600"
                     >
-                      {m.titulo}
-                      {externo && <span aria-hidden> ↗</span>}
+                      <IconeCaixa nome="documento" cor="#14b8a6" tamanho={28} className="!rounded-lg" />
+                      <span className="min-w-0 flex-1">{m.titulo}</span>
+                      {externo && <Icone nome="externo" tamanho={14} espessura={2.2} className="shrink-0 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />}
                     </a>
                   </li>
                 );

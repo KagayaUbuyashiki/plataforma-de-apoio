@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Icone, IconeCaixa, type NomeIcone } from "@/components/Icone";
 import { Titulo } from "@/components/Titulo";
 import { NIVEIS } from "@/lib/editor/niveis";
 import { ProjetosSalvos } from "./ProjetosSalvos";
 
 export const metadata: Metadata = { title: "Editor de código" };
+
+const VISUAL: Record<string, { icone: NomeIcone; cor: string }> = {
+  iniciante: { icone: "brilho", cor: "#14b8a6" },
+  intermediario: { icone: "teclado", cor: "#0ea5c6" },
+  livre: { icone: "foguete", cor: "#6366f1" },
+};
+
+function Tecla({ children }: { children: React.ReactNode }) {
+  return (
+    <kbd className="rounded-md border border-slate-300 bg-white px-1.5 py-0.5 font-mono text-xs font-bold text-tinta shadow-[0_2px_0_#cbd5e1]">
+      {children}
+    </kbd>
+  );
+}
 
 export default function Editor() {
   return (
@@ -19,49 +34,59 @@ export default function Editor() {
           <Link
             key={n.id}
             href={`/editor/${n.id}`}
-            className="group flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-marca-500 hover:shadow-md"
+            data-revelar
+            style={{ "--d": i } as React.CSSProperties}
+            className="vidro group flex flex-col rounded-3xl p-7 transition duration-500 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-2 hover:bg-white/85"
           >
             <div className="flex items-center justify-between">
-              <span className="text-4xl" aria-hidden>{n.icone}</span>
-              <span className="font-mono text-sm font-bold text-marca-600">Nível {i + 1}</span>
+              <IconeCaixa
+                nome={VISUAL[n.id]?.icone ?? "codigo"}
+                cor={VISUAL[n.id]?.cor ?? "#0ea5c6"}
+                className="transition duration-500 group-hover:-rotate-6 group-hover:scale-105"
+              />
+              <span className="chip">Nível {i + 1}</span>
             </div>
-            <h2 className="mt-3 text-xl font-bold text-slate-900 group-hover:text-marca-700">{n.nome}</h2>
-            <p className="mt-1 text-sm text-slate-600">{n.resumo}</p>
-            <ul className="mt-4 flex flex-col gap-1.5 text-sm text-slate-700">
+            <h2 className="mt-5 text-xl font-extrabold text-tinta">{n.nome}</h2>
+            <p className="mt-1.5 text-sm font-medium leading-relaxed text-tinta-suave">{n.resumo}</p>
+            <ul className="mt-5 flex flex-col gap-2 text-sm font-medium text-[#2b3a4a]">
               {n.recursos.map((r) => (
-                <li key={r} className="flex gap-2">
-                  <span className="text-marca-600" aria-hidden>✓</span>
+                <li key={r} className="flex gap-2.5">
+                  <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-marca-100 text-marca-700" aria-hidden>
+                    <Icone nome="check" tamanho={10} espessura={3} />
+                  </span>
                   {r}
                 </li>
               ))}
             </ul>
-            <span className="mt-auto pt-6 text-sm font-semibold text-marca-700">Novo projeto →</span>
+            <span className="mt-auto flex items-center gap-1.5 pt-7 text-sm font-bold text-marca-600">
+              Novo projeto <Icone nome="seta" tamanho={14} espessura={2.2} className="seta-anda" />
+            </span>
           </Link>
         ))}
       </div>
 
       <ProjetosSalvos />
 
-      <section className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 md:grid-cols-3">
+      <section data-revelar className="vidro grid gap-6 rounded-3xl p-6 sm:p-8 md:grid-cols-3">
         <div>
-          <h2 className="font-semibold">⌨️ Atalhos úteis</h2>
-          <ul className="mt-2 space-y-1 text-sm text-slate-600">
-            <li><kbd className="rounded border px-1">Ctrl</kbd> + <kbd className="rounded border px-1">Z</kbd> desfaz</li>
-            <li><kbd className="rounded border px-1">Ctrl</kbd> + <kbd className="rounded border px-1">S</kbd> salva</li>
-            <li><kbd className="rounded border px-1">Ctrl</kbd> + <kbd className="rounded border px-1">Espaço</kbd> mostra sugestões</li>
-            <li><kbd className="rounded border px-1">Ctrl</kbd> + <kbd className="rounded border px-1">/</kbd> comenta a linha</li>
+          <h2 className="flex items-center gap-2.5 font-extrabold"><IconeCaixa nome="teclado" cor="#0ea5c6" tamanho={32} className="!rounded-xl" /> Atalhos úteis</h2>
+          <ul className="mt-3 space-y-2 text-sm font-medium text-tinta-suave">
+            <li><Tecla>Ctrl</Tecla> + <Tecla>Z</Tecla> desfaz</li>
+            <li><Tecla>Ctrl</Tecla> + <Tecla>S</Tecla> salva</li>
+            <li><Tecla>Ctrl</Tecla> + <Tecla>Espaço</Tecla> mostra sugestões</li>
+            <li><Tecla>Ctrl</Tecla> + <Tecla>/</Tecla> comenta a linha</li>
           </ul>
         </div>
         <div>
-          <h2 className="font-semibold">🚀 No nível Livre</h2>
-          <p className="mt-2 text-sm text-slate-600">
-            Digite <code className="rounded bg-slate-100 px-1">!</code> e aperte <kbd className="rounded border px-1">Tab</kbd> para gerar a estrutura
-            do HTML. Experimente também <code className="rounded bg-slate-100 px-1">ul&gt;li*3</code> + Tab.
+          <h2 className="flex items-center gap-2.5 font-extrabold"><IconeCaixa nome="foguete" cor="#6366f1" tamanho={32} className="!rounded-xl" /> No nível Livre</h2>
+          <p className="mt-3 text-sm font-medium leading-relaxed text-tinta-suave">
+            Digite <code className="rounded-md bg-white/80 px-1.5 font-semibold">!</code> e aperte <Tecla>Tab</Tecla> para gerar a estrutura
+            do HTML. Experimente também <code className="rounded-md bg-white/80 px-1.5 font-semibold">ul&gt;li*3</code> + Tab.
           </p>
         </div>
         <div>
-          <h2 className="font-semibold">💾 Seus arquivos</h2>
-          <p className="mt-2 text-sm text-slate-600">
+          <h2 className="flex items-center gap-2.5 font-extrabold"><IconeCaixa nome="disco" cor="#ec4899" tamanho={32} className="!rounded-xl" /> Seus arquivos</h2>
+          <p className="mt-3 text-sm font-medium leading-relaxed text-tinta-suave">
             O <strong>.zip</strong> tem os arquivos de verdade (index.html, style.css…). Descompacte e abra o index.html no navegador, ou envie
             para a banca!
           </p>

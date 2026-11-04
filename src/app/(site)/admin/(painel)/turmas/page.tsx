@@ -20,14 +20,14 @@ export default async function AdminTurmas({ searchParams }: Props) {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Turmas e instrutores</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Turmas e instrutores</h1>
       {ok && <Aviso tipo="sucesso">{ok}</Aviso>}
       {erro && <Aviso tipo="erro">{erro}</Aviso>}
 
       <section className={`${cartao} flex flex-col gap-4`}>
         <div>
-          <h2 className="text-xl font-semibold">Turmas</h2>
-          <p className="text-sm text-slate-500">
+          <h2 className="text-xl font-extrabold">Turmas</h2>
+          <p className="text-sm text-tinta-suave">
             Os alunos digitam o <strong>código</strong> para avaliar. Desative a turma quando o programa acabar.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default async function AdminTurmas({ searchParams }: Props) {
         {(turmas as Turma[] | null)?.length ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 text-slate-500">
+              <thead className="border-b border-white text-tinta-suave">
                 <tr>
                   <th className="py-2 pr-4 font-medium">Turma</th>
                   <th className="py-2 pr-4 font-medium">Código</th>
@@ -62,16 +62,16 @@ export default async function AdminTurmas({ searchParams }: Props) {
                   <th className="py-2 font-medium"><span className="sr-only">Ações</span></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-white/80">
                 {(turmas as Turma[]).map((t) => (
                   <tr key={t.id}>
                     <td className="py-3 pr-4">
                       <p className="font-medium">{t.nome}</p>
-                      <p className="text-slate-500">{[t.escola, t.cidade].filter(Boolean).join(" · ")}</p>
+                      <p className="text-tinta-suave">{[t.escola, t.cidade].filter(Boolean).join(" · ")}</p>
                     </td>
                     <td className="py-3 pr-4 font-mono text-base font-semibold">{t.codigo}</td>
                     <td className="py-3 pr-4">
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${t.ativa ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${t.ativa ? "bg-emerald-50 text-emerald-700" : "bg-white/70 text-tinta-suave"}`}>
                         {t.ativa ? "ativa" : "inativa"}
                       </span>
                     </td>
@@ -91,14 +91,14 @@ export default async function AdminTurmas({ searchParams }: Props) {
             </table>
           </div>
         ) : (
-          <p className="text-sm text-slate-500">Nenhuma turma ainda.</p>
+          <p className="text-sm text-tinta-suave">Nenhuma turma ainda.</p>
         )}
       </section>
 
       <section className={`${cartao} flex flex-col gap-4`}>
         <div>
-          <h2 className="text-xl font-semibold">Instrutores</h2>
-          <p className="text-sm text-slate-500">
+          <h2 className="text-xl font-extrabold">Instrutores</h2>
+          <p className="text-sm text-tinta-suave">
             Os nomes aparecem nas aulas e na avaliação. (A conta de login de cada instrutor é criada no Supabase; veja o README.)
           </p>
         </div>
@@ -114,7 +114,7 @@ export default async function AdminTurmas({ searchParams }: Props) {
           <button type="submit" className={botao}>Cadastrar</button>
         </form>
 
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-white/80">
           {((instrutores as Instrutor[] | null) ?? []).map((i) => (
             <li key={i.id} className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center">
               <form action={salvarInstrutor} className="grid flex-1 gap-2 sm:grid-cols-[1fr_2fr_auto] sm:items-center">

@@ -14,8 +14,8 @@ export function StarRating({ nome, rotulo, descricao }: Props) {
 
   return (
     <fieldset className="flex flex-col gap-1">
-      <legend className="font-medium text-slate-800">{rotulo}</legend>
-      {descricao && <p className="text-sm text-slate-500">{descricao}</p>}
+      <legend className="font-bold text-tinta">{rotulo}</legend>
+      {descricao && <p className="text-sm text-tinta-suave">{descricao}</p>}
       <div className="mt-1 flex items-center gap-1" onMouseLeave={() => setHover(0)}>
         {[1, 2, 3, 4, 5].map((n) => (
           <label key={n} className="cursor-pointer" onMouseEnter={() => setHover(n)}>
@@ -36,9 +36,9 @@ export function StarRating({ nome, rotulo, descricao }: Props) {
               height="36"
               viewBox="0 0 24 24"
               aria-hidden
-              className={`rounded transition peer-focus-visible:ring-2 peer-focus-visible:ring-marca-500 ${
-                n <= mostrado ? "fill-amber-400 text-amber-500" : "fill-slate-200 text-slate-300"
-              }`}
+              className={`rounded transition duration-200 hover:scale-110 peer-focus-visible:ring-2 peer-focus-visible:ring-marca-500 ${
+                n <= mostrado ? "fill-amber-400 text-amber-500 drop-shadow-[0_4px_8px_rgb(245_158_11/0.35)]" : "fill-white/80 text-slate-300"
+              } ${n === valor ? "animate-pulsar" : ""}`}
               stroke="currentColor"
               strokeWidth="1"
             >
@@ -46,7 +46,7 @@ export function StarRating({ nome, rotulo, descricao }: Props) {
             </svg>
           </label>
         ))}
-        <span className="ml-2 min-w-24 text-sm text-slate-600" aria-hidden>
+        <span className="ml-2 min-w-24 text-sm font-semibold text-tinta-suave" aria-hidden>
           {mostrado ? LEGENDAS[mostrado] : ""}
         </span>
       </div>

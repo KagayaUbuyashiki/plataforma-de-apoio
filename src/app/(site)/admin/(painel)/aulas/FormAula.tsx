@@ -40,7 +40,7 @@ export function FormAula({ aula, instrutores, proximoNumero }: Props) {
           </div>
           <div>
             <label htmlFor="slug" className={rotulo}>Endereço da página</label>
-            <div className="flex items-center gap-1 text-sm text-slate-500">
+            <div className="flex items-center gap-1 text-sm text-tinta-suave">
               <span>/aulas/</span>
               <input id="slug" name="slug" defaultValue={aula?.slug} placeholder={`aula-${aula?.numero ?? proximoNumero}`} className={campo} />
             </div>
@@ -55,7 +55,7 @@ export function FormAula({ aula, instrutores, proximoNumero }: Props) {
             {previa ? "Editar" : "Pré-visualizar"}
           </button>
         </div>
-        <p className="text-xs text-slate-500">{AJUDA_MD}</p>
+        <p className="text-xs text-tinta-suave">{AJUDA_MD}</p>
 
         {/* Os campos ficam sempre no formulário (escondidos na pré-visualização) para serem enviados. */}
         <div className={previa ? "hidden" : "flex flex-col gap-4"}>
@@ -69,8 +69,8 @@ export function FormAula({ aula, instrutores, proximoNumero }: Props) {
           </div>
         </div>
         {previa && (
-          <div className="flex flex-col gap-6 rounded-lg border border-slate-200 p-4">
-            <div className="rounded-lg border-l-4 border-marca-500 bg-marca-50 p-4">
+          <div className="flex flex-col gap-6 rounded-2xl border border-white bg-white/60 p-4">
+            <div className="vidro rounded-2xl !border-l-4 !border-l-marca-500 p-4">
               <Markdown>{resumo || "_Sem resumo._"}</Markdown>
             </div>
             <Markdown>{conteudo || "_Sem conteúdo._"}</Markdown>
@@ -93,7 +93,7 @@ export function FormAula({ aula, instrutores, proximoNumero }: Props) {
         <fieldset>
           <legend className={rotulo}>Instrutores desta aula</legend>
           {instrutores.length === 0 ? (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-tinta-suave">
               Nenhum instrutor cadastrado. <Link href="/admin/turmas" className="text-marca-700 underline">Cadastre aqui</Link>.
             </p>
           ) : (
@@ -108,7 +108,7 @@ export function FormAula({ aula, instrutores, proximoNumero }: Props) {
               ))}
             </ul>
           )}
-          <p className="mt-2 text-xs text-slate-500">Os alunos avaliam cada instrutor marcado.</p>
+          <p className="mt-2 text-xs text-tinta-suave">Os alunos avaliam cada instrutor marcado.</p>
         </fieldset>
       </section>
 

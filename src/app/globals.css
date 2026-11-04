@@ -2,16 +2,32 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Cor da plataforma */
   --color-marca-50: #ecfeff;
   --color-marca-100: #cffafe;
-  --color-marca-500: #0e94b0;
+  --color-marca-500: #0ea5c6;
   --color-marca-600: #0b7a92;
   --color-marca-700: #0a6377;
   --color-marca-900: #083344;
+
+  /* Textos */
+  --color-tinta: #0c1b2a;
+  --color-tinta-suave: #4a5b6d;
+
+  /* Acentos da aurora */
+  --color-aurora-ceu: #0ea5c6;
+  --color-aurora-lilas: #6366f1;
+  --color-aurora-menta: #14b8a6;
+  --color-aurora-rosa: #ec4899;
+  --color-aurora-sol: #f59e0b;
+
+  --animate-flutuar: flutuar 6s ease-in-out infinite;
+  --animate-entrar-menu: entrar-menu 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pulsar: pulsar 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-surgir: surgir 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 html {
@@ -19,13 +35,137 @@ html {
 }
 
 body {
-  background: #f8fafc;
-  color: #1f2937;
+  background: #eef5f8;
+  color: var(--color-tinta);
 }
 
 :focus-visible {
   outline: 3px solid var(--color-marca-500);
   outline-offset: 2px;
+}
+
+/* ---------- Vidro fosco ---------- */
+@utility vidro {
+  background: rgb(255 255 255 / 0.62);
+  border: 1px solid rgb(255 255 255 / 0.85);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 20px 50px -20px rgb(12 27 42 / 0.18);
+}
+
+/* Mais opaco: formulários e textos longos */
+@utility vidro-forte {
+  background: rgb(255 255 255 / 0.8);
+  border: 1px solid rgb(255 255 255 / 0.9);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 20px 50px -20px rgb(12 27 42 / 0.18);
+}
+
+@utility texto-aurora {
+  background: linear-gradient(100deg, #0b7a92, #4f46e5 55%, #db2777);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@layer components {
+  .btn-primario {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-tinta px-5 py-3 text-sm font-bold text-white shadow-[0_10px_24px_-10px_rgb(12_27_42/0.6)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_30px_-12px_rgb(12_27_42/0.6)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0;
+  }
+  .btn-secundario {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white bg-white/70 px-5 py-3 text-sm font-bold text-tinta transition duration-300 hover:-translate-y-0.5 hover:bg-white;
+  }
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/85 bg-white/62 px-3.5 py-1.5 text-[13px] font-bold text-marca-600 backdrop-blur-md;
+  }
+  /* Seta que anda no hover do elemento pai com a classe "group" */
+  .seta-anda {
+    @apply transition-transform duration-300 group-hover:translate-x-1;
+  }
+}
+
+/* ---------- Fundo aurora ---------- */
+.aurora-mancha {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.7;
+  mix-blend-mode: multiply;
+  animation: aurora-deriva 18s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-deriva {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, -40px) scale(1.15); }
+  100% { transform: translate(-60px, 50px) scale(0.95); }
+}
+@keyframes flutuar {
+  50% { transform: translateY(-14px); }
+}
+@keyframes entrar-menu {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+@keyframes pulsar {
+  50% { transform: scale(1.25); }
+}
+@keyframes surgir {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+}
+
+/* Reflexo dos cards coloridos (ODS) */
+.reflexo {
+  position: relative;
+  isolation: isolate;
+}
+.reflexo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.35), transparent 50%);
+  pointer-events: none;
+}
+
+/* ---------- Revelar ao rolar ----------
+   Só esconde quando o JavaScript está ativo (classe "js" no <html>). */
+html.js [data-revelar] {
+  opacity: 0;
+  transform: translateY(30px) scale(0.97);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+html.js [data-revelar].revelado {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  html.js [data-revelar] {
+    opacity: 1;
+    transform: none;
+  }
+  .aurora-mancha {
+    animation: none !important;
+  }
 }
 
 /* Editor: destaque das linhas recém-inseridas por um bloco */
