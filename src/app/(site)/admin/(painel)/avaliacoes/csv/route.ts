@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return NextResponse.redirect(new URL("/admin/login", request.url));
+  if (!user) return NextResponse.redirect(new URL("/entrar", request.url));
   if (!(await ehInstrutorAutorizado(supabase))) return new NextResponse("Conta não autorizada como instrutor.", { status: 403 });
 
   const turma = request.nextUrl.searchParams.get("turma") || undefined;

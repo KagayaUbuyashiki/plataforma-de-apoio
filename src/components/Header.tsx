@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icone } from "@/components/Icone";
 
 const LINKS = [
@@ -17,6 +17,26 @@ const LINKS = [
 export function Header() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
+  const [papel, setPapel] = useState<"instrutor" | "aluno" | null>(null);
+
+  // Descobre se há alguém logado sem tornar as páginas dinâmicas.
+  useEffect(() => {
+    let ativo = true;
+    fetch("/api/eu", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { papel: null }))
+      .then((d) => ativo && setPapel(d.papel ?? null))
+      .catch(() => {});
+    return () => {
+      ativo = false;
+    };
+  }, [pathname]);
+
+  const conta =
+    papel === "instrutor"
+      ? { href: "/admin", rotulo: "Painel" }
+      : papel === "aluno"
+        ? { href: "/minha-area", rotulo: "Minha área" }
+        : { href: "/entrar", rotulo: "Entrar" };
 
   const ativo = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
@@ -51,9 +71,17 @@ export function Header() {
           ))}
         </nav>
 
-        <Link href="/avaliar" className="btn-primario hidden !py-2.5 md:inline-flex">
-          Avaliar aula
-        </Link>
+        <div className="hidden items-center gap-2 md:flex">
+          <Link
+            href={conta.href}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-2.5 text-sm font-bold text-tinta transition duration-300 hover:-translate-y-0.5 hover:bg-white"
+          >
+            <Icone nome="usuario" tamanho={16} espessura={2.1} /> {conta.rotulo}
+          </Link>
+          <Link href="/avaliar" className="btn-primario !py-2.5">
+            Avaliar aula
+          </Link>
+        </div>
 
         <button
           type="button"
@@ -84,7 +112,10 @@ export function Header() {
               {l.rotulo}
             </Link>
           ))}
-          <Link href="/avaliar" onClick={() => setAberto(false)} className="btn-primario mt-1">
+          <Link href={conta.href} onClick={() => setAberto(false)} className="btn-secundario mt-1">
+            <Icone nome="usuario" tamanho={16} espessura={2.1} /> {conta.rotulo}
+          </Link>
+          <Link href="/avaliar" onClick={() => setAberto(false)} className="btn-primario">
             Avaliar aula
           </Link>
         </nav>

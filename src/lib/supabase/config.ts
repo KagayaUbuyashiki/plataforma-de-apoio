@@ -57,3 +57,27 @@ export function diagnosticoSupabase(): string {
   };
   return [descrever(URLS, urlValida, "URL"), descrever(CHAVES, chaveValida, "chave pública")].join("; ");
 }
+
+/**
+ * Chave SECRETA do Supabase (service role). Só existe no servidor: nunca use NEXT_PUBLIC_ aqui.
+ * Necessária para criar as contas dos alunos e redefinir senhas.
+ */
+const SECRETAS: Candidata[] = [
+  { nome: "SUPABASE_SECRET_KEY", valor: limpar(process.env.SUPABASE_SECRET_KEY) },
+  { nome: "SUPABASE_SERVICE_ROLE_KEY", valor: limpar(process.env.SUPABASE_SERVICE_ROLE_KEY) },
+];
+const secretaValida = (v: string) => /^(sb_secret_[\w-]+|eyJ[\w-]+\.[\w-]+\.[\w-]+)$/.test(v);
+
+export const SUPABASE_SECRET_KEY = SECRETAS.find((c) => secretaValida(c.valor))?.valor ?? "";
+
+export function contasConfiguradas(): boolean {
+  return supabaseConfigurado() && SUPABASE_SECRET_KEY.length > 0;
+}
+
+/** Cookies da sessão: inacessíveis ao JavaScript da página e só por HTTPS em produção. */
+export const OPCOES_COOKIE = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+};

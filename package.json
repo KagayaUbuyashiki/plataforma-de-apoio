@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "postinstall": "node scripts/copiar-monaco.mjs",
     "prebuild": "node scripts/copiar-monaco.mjs",
-    "predev": "node scripts/copiar-monaco.mjs"
+    "predev": "node scripts/copiar-monaco.mjs",
+    "test:seguranca": "node --test --test-concurrency=1 tests/seguranca/*.test.mjs"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { exigirInstrutor } from "@/lib/auth";
-import { sair } from "../login/actions";
+import { sair } from "@/app/(site)/entrar/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/admin", rotulo: "Painel" },
   { href: "/admin/sites", rotulo: "Sites" },
   { href: "/admin/aulas", rotulo: "Aulas" },
+  { href: "/admin/alunos", rotulo: "Alunos" },
   { href: "/admin/turmas", rotulo: "Turmas e instrutores" },
   { href: "/admin/contatos", rotulo: "Contatos" },
   { href: "/admin/avaliacoes", rotulo: "Avaliações" },
