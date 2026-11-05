@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { esquemaFicha } from "@/lib/ficha";
 import {
+  ehContaDeAluno,
   emailDoUsuario,
   esquemaUsuario,
   excedeuLimite,
@@ -206,7 +207,11 @@ export async function concluirAcesso(anterior: EstadoCodigo, formData: FormData)
       return voltar("Esse usuário já existe. Escolha outro.");
     }
   } else {
-    // Conta redefinida: senha nova e desbloqueio.
+    // Conta redefinida: senha nova e desbloqueio (só se a conta for mesmo de aluno).
+    if (!(await ehContaDeAluno(userId!))) {
+      await devolverCodigo(hash);
+      return { etapa: "codigo", erro: MSG_CODIGO_INVALIDO };
+    }
     const { error } = await admin.auth.admin.updateUserById(userId!, { password: senha, ban_duration: "none" });
     if (error) {
       await devolverCodigo(hash);

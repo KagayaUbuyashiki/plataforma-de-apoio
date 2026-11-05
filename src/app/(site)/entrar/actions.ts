@@ -13,11 +13,14 @@ import {
   MSG_MUITAS_TENTATIVAS,
   registrarFalha,
 } from "@/lib/contas";
-import { contasConfiguradas } from "@/lib/supabase/config";
+import { contasConfiguradas, supabaseConfigurado } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
 export async function entrar(_anterior: string | null, formData: FormData): Promise<string | null> {
-  if (!contasConfiguradas()) return "O login ainda não foi configurado na plataforma. Avise o responsável.";
+  if (!supabaseConfigurado()) return "O login ainda não foi configurado na plataforma. Avise o responsável.";
+  // Sem a chave secreta, o login continua funcionando (o Supabase Auth tem limites próprios),
+  // mas o nosso limite de tentativas fica desligado.
+  const comLimite = contasConfiguradas();
 
   const identificador = String(formData.get("usuario") ?? "").trim().toLowerCase();
   const senha = String(formData.get("senha") ?? "");
@@ -26,21 +29,24 @@ export async function entrar(_anterior: string | null, formData: FormData): Prom
   const email = emailDoIdentificador(identificador);
   const ip = await ipDoCliente();
   if (
-    (await excedeuLimite("login-usuario", identificador, LIMITES.loginPorUsuario)) ||
-    (await excedeuLimite("login-ip", ip, LIMITES.loginPorIp))
+    comLimite &&
+    ((await excedeuLimite("login-usuario", identificador, LIMITES.loginPorUsuario)) ||
+      (await excedeuLimite("login-ip", ip, LIMITES.loginPorIp)))
   ) {
     return MSG_MUITAS_TENTATIVAS;
   }
   if (!email || senha.length > 200) {
-    await registrarFalha("login-ip", ip);
+    if (comLimite) await registrarFalha("login-ip", ip);
     return MSG_LOGIN_INVALIDO;
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
   if (error) {
-    await registrarFalha("login-usuario", identificador);
-    await registrarFalha("login-ip", ip);
+    if (comLimite) {
+      await registrarFalha("login-usuario", identificador);
+      await registrarFalha("login-ip", ip);
+    }
     // Conta bloqueada = o instrutor redefiniu a conta e o aluno precisa do código novo.
     if (error.code === "user_banned") return MSG_CONTA_REDEFINIDA;
     return MSG_LOGIN_INVALIDO;
@@ -51,7 +57,7 @@ export async function entrar(_anterior: string | null, formData: FormData): Prom
     await supabase.auth.signOut();
     return "Esta conta não tem acesso à plataforma. Fale com o instrutor.";
   }
-  await limparFalhas("login-usuario", identificador);
+  if (comLimite) await limparFalhas("login-usuario", identificador);
   redirect(papel === "instrutor" ? "/admin" : "/minha-area");
 }
 

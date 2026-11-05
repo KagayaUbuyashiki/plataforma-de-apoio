@@ -325,6 +325,34 @@ describe("Controle de acesso (um aluno não vê nem altera dados de outro)", () 
   });
 });
 
+describe("Instrutor não mexe em contas que não são de aluno", () => {
+  test("instrutor não liga uma ficha à conta de outra pessoa pela API", async () => {
+    const { data: outro } = await admin.auth.admin.createUser({ email: `outro.instrutor@${DOMINIO}`, password: "OutroInstrutor9", email_confirm: true });
+    criados.usuarios.push(outro.user.id);
+    await admin.from("instrutores_autorizados").insert({ user_id: outro.user.id, email: outro.user.email });
+    const a = await alunoComCodigo();
+    const instrutor = await clienteDe("instrutor.teste", "InstrutorTeste9");
+    const r1 = await instrutor.from("alunos").update({ user_id: outro.user.id }).eq("id", a.id);
+    const r2 = await instrutor.from("alunos").update({ situacao: "ativo" }).eq("id", a.id);
+    const r3 = await instrutor.from("alunos").insert({ nome: "Ficha falsa", user_id: outro.user.id });
+    assert.ok(r1.error && r2.error && r3.error, "o banco deveria recusar");
+    const { data } = await admin.from("alunos").select("user_id, situacao").eq("id", a.id).single();
+    assert.equal(data.user_id, null);
+    assert.equal(data.situacao, "aguardando_token");
+    // Mesmo que a ficha fosse ligada (ex.: erro manual no banco), o servidor recusa redefinir a conta.
+    await admin.from("alunos").update({ user_id: outro.user.id, situacao: "ativo" }).eq("id", a.id);
+    const page = await novaPagina();
+    await entrarComo(page, "instrutor.teste", "InstrutorTeste9");
+    await page.goto(`${APP}/admin/alunos/${a.id}`);
+    page.on("dialog", (d) => d.accept());
+    await page.click("text=Recuperar conta / redefinir senha");
+    await page.waitForSelector("text=não está ligada a uma conta de aluno", { timeout: 15000 });
+    const { data: u } = await admin.auth.admin.getUserById(outro.user.id);
+    assert.ok(!u.user.banned_until || new Date(u.user.banned_until) < new Date(), "outro instrutor foi bloqueado");
+    await admin.from("alunos").update({ user_id: null }).eq("id", a.id);
+  });
+});
+
 describe("Login", () => {
   test("visitante não acessa a minha área", async () => {
     const page = await novaPagina();

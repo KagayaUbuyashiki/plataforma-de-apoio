@@ -87,6 +87,15 @@ alter table public.tentativas_acesso enable row level security;
 -- Nada de acesso direto pela API para as tabelas sensíveis.
 revoke all on public.contas_login, public.tokens_aluno, public.tentativas_acesso from anon, authenticated;
 
+-- alunos: pela API, o instrutor só escolhe nome e turma. user_id e situação
+-- (que ligam a ficha a uma conta do Auth) só o servidor altera, com a chave secreta.
+-- Sem isso, um instrutor poderia ligar a ficha à conta de outra pessoa e redefinir a senha dela.
+revoke all on public.alunos from anon;
+revoke insert, update on public.alunos from authenticated;
+grant insert (nome, turma_id, criado_por) on public.alunos to authenticated;
+grant update (nome, turma_id) on public.alunos to authenticated;
+revoke insert, update on public.progresso_aluno from anon;
+
 -- ---------- Funções auxiliares ----------
 
 -- Id do aluno da conta logada (ou null).

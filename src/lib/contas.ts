@@ -102,3 +102,16 @@ export const LIMITES = {
   loginPorIp: 30,
   codigoPorIp: 10,
 } as const;
+
+/**
+ * Confere, com a chave secreta, que a conta do Auth é de ALUNO (e não de instrutor)
+ * antes de trocar senha, bloquear ou apagar. Defesa extra além das permissões do banco.
+ */
+export async function ehContaDeAluno(userId: string): Promise<boolean> {
+  const admin = createAdminClient();
+  const [{ data: conta }, { data: instrutor }] = await Promise.all([
+    admin.from("contas_login").select("papel").eq("user_id", userId).maybeSingle(),
+    admin.from("instrutores_autorizados").select("user_id").eq("user_id", userId).maybeSingle(),
+  ]);
+  return conta?.papel === "aluno" && !instrutor;
+}

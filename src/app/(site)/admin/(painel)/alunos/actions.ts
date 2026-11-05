@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { exigirInstrutor } from "@/lib/auth";
+import { ehContaDeAluno } from "@/lib/contas";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { contasConfiguradas } from "@/lib/supabase/config";
 import { criarCodigoParaAluno, senhaAleatoria } from "@/lib/tokens";
@@ -61,6 +62,7 @@ export async function redefinirConta(_anterior: ResultadoCodigo, formData: FormD
 
   const admin = createAdminClient();
   if (aluno.user_id) {
+    if (!(await ehContaDeAluno(aluno.user_id))) return { erro: "Esta ficha não está ligada a uma conta de aluno." };
     const { error } = await admin.auth.admin.updateUserById(aluno.user_id, { password: senhaAleatoria(), ban_duration: "876000h" });
     if (error) return { erro: "Não foi possível redefinir a conta. Tente de novo." };
   }
@@ -76,7 +78,9 @@ export async function excluirAluno(formData: FormData) {
   if (!alunoId.success) return;
   const { data: aluno } = await supabase.from("alunos").select("id, user_id").eq("id", alunoId.data).maybeSingle();
   if (!aluno) return;
-  if (aluno.user_id && contasConfiguradas()) await createAdminClient().auth.admin.deleteUser(aluno.user_id);
+  if (aluno.user_id && contasConfiguradas() && (await ehContaDeAluno(aluno.user_id))) {
+    await createAdminClient().auth.admin.deleteUser(aluno.user_id);
+  }
   await supabase.from("alunos").delete().eq("id", aluno.id);
   revalidatePath("/admin/alunos");
   redirect("/admin/alunos");
