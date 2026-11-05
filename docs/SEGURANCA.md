@@ -30,7 +30,11 @@ Testes automáticos: `npm run test:seguranca` (precisa do Supabase local: `npx s
 - [x] `contas_login`, `tokens_aluno` e `tentativas_acesso` sem nenhuma política e sem permissões para `anon`/`authenticated`.
 - [x] Funções sensíveis (`consumir_token`, `contar_tentativas`, `registrar_tentativa`, `limpar_tentativas`) só para `service_role`.
 - [x] Páginas: `/admin/*` exige `exigirInstrutor()`, `/minha-area/*` exige `exigirAluno()`; o middleware manda visitantes para `/entrar`.
-- [ ] Depois de cada migração em produção: rodar os avisos de segurança do Supabase (Advisors → Security).
+- [x] Avisos de segurança do Supabase (Advisors → Security) revisados em 05/11/2026, depois das migrações 0005 e 0006:
+  - "RLS sem políticas" em `contas_login`, `tokens_aluno`, `tentativas_acesso` e `instrutores_autorizados`: **intencional** (só o servidor acessa).
+  - Funções `security definer` executáveis: `eh_instrutor`, `verificar_turma` e `enviar_avaliacao` são públicas de propósito (regras de leitura e avaliação anônima); `eh_aluno`, `meu_aluno_id` e `salvar_ficha` só para logados (0006 tirou o acesso de visitantes).
+  - "Proteção contra senhas vazadas" desligada: ligar no painel (Authentication → Policies) se o plano do Supabase permitir.
+- [ ] Rodar os avisos de novo depois de cada migração.
 
 ## Limite de tentativas
 - [x] Login: 5 erros por usuário e 30 por IP a cada 15 minutos. Código: 10 erros por IP a cada 15 minutos. (Testes.)

@@ -4,7 +4,7 @@
 --
 -- Segurança:
 -- - Senhas: ficam só no Supabase Auth (auth.users), com hash bcrypt.
--- - Códigos de acesso: o banco guarda apenas o hash SHA-256.
+-- - Códigos de acesso: o banco guarda apenas o HMAC-SHA256 (com a chave secreta do servidor).
 -- - contas_login, tokens_aluno e tentativas_acesso não têm políticas:
 --   só o servidor (chave secreta) acessa.
 -- - Alunos só leem os próprios dados; instrutores autorizados leem tudo.
