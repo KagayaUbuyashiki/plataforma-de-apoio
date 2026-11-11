@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Aviso } from "@/components/Aviso";
+import { Conquistas } from "@/components/Conquistas";
 import { Icone } from "@/components/Icone";
+import { ProgressoDesafios } from "@/components/ProgressoDesafios";
 import { Titulo } from "@/components/Titulo";
 import { getOds } from "@/data/ods";
 import { sair } from "@/app/(site)/entrar/actions";
@@ -16,7 +18,7 @@ type Props = { searchParams: Promise<{ bemvindo?: string }> };
 
 export default async function MinhaArea({ searchParams }: Props) {
   const { bemvindo } = await searchParams;
-  const { supabase, aluno } = await exigirAluno();
+  const { supabase, user, aluno } = await exigirAluno();
 
   const [{ data: aulas }, { data: progresso }] = await Promise.all([
     supabase.from("aulas").select("id, numero, titulo").eq("publicada", true).order("numero"),
@@ -27,6 +29,7 @@ export default async function MinhaArea({ searchParams }: Props) {
     ...(aulas ?? []).map((a) => ({ item: `aula:${a.id}`, titulo: `Aula ${a.numero}: ${a.titulo}`, grupo: "aulas" as const })),
     ...ETAPAS_PROJETO.map((e) => ({ item: e.item, titulo: e.titulo, texto: e.texto, grupo: "etapas" as const })),
   ];
+  const feitos = (progresso ?? []).map((p) => p.item);
   const nome = aluno.como_chamar || aluno.nome.split(" ")[0];
   const ods = aluno.ods_interesse ? getOds(aluno.ods_interesse) : undefined;
 
@@ -42,8 +45,16 @@ export default async function MinhaArea({ searchParams }: Props) {
 
       {bemvindo && <Aviso tipo="sucesso">Conta pronta! A partir de agora você entra com o seu usuário e a sua senha.</Aviso>}
 
+      <Conquistas
+        usuario={user.id}
+        dados={{ itens: feitos, aulasPublicadas: (aulas ?? []).map((a) => a.id), odsInteresse: aluno.ods_interesse }}
+      />
+
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <Checklist itens={itens} feitos={(progresso ?? []).map((p) => p.item)} />
+        <div className="flex min-w-0 flex-col gap-6">
+          <Checklist itens={itens} feitos={feitos} />
+          <ProgressoDesafios itens={feitos} />
+        </div>
 
         <aside data-revelar className="vidro flex flex-col gap-4 self-start rounded-3xl p-6">
           <h2 className="font-extrabold">Minha ficha</h2>

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BotaoRemover } from "@/components/admin/BotaoRemover";
 import { cartao } from "@/components/admin/estilos";
-import { Icone } from "@/components/Icone";
+import { Icone, IconeCaixa } from "@/components/Icone";
+import { ProgressoDesafios } from "@/components/ProgressoDesafios";
+import { calcularConquistas } from "@/lib/conquistas";
 import { getOds } from "@/data/ods";
 import { exigirInstrutor } from "@/lib/auth";
 import { ETAPAS_PROJETO, EXPERIENCIAS } from "@/lib/checklist";
@@ -38,6 +40,11 @@ export default async function AdminAluno({ params }: Props) {
     ...ETAPAS_PROJETO.map((e) => ({ item: e.item, titulo: e.titulo })),
   ];
   const ods = aluno.ods_interesse ? getOds(aluno.ods_interesse) : undefined;
+  const todosItens = (progresso ?? []).map((p) => p.item);
+  // "Curioso(a)" depende do navegador do aluno, então não aparece aqui.
+  const medalhas = calcularConquistas({ itens: todosItens, aulasPublicadas: (aulas ?? []).map((a) => a.id), odsInteresse: aluno.ods_interesse }).filter(
+    (c) => c.id !== "curioso",
+  );
   const exp = EXPERIENCIAS.find((e) => e.valor === aluno.experiencia)?.rotulo;
 
   return (
@@ -103,6 +110,24 @@ export default async function AdminAluno({ params }: Props) {
           </ul>
         </section>
       </div>
+
+      <ProgressoDesafios itens={todosItens} comLinks={false} />
+
+      <section className={`${cartao} flex flex-col gap-3`}>
+        <h2 className="text-xl font-extrabold">
+          Medalhas ({medalhas.filter((m) => m.ganha).length} de {medalhas.length})
+        </h2>
+        <ul className="flex flex-wrap gap-3">
+          {medalhas.map((m) => (
+            <li key={m.id} title={m.texto} className={`flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-sm font-bold ${m.ganha ? "bg-white" : "bg-white/40 text-tinta-suave"}`}>
+              <span className={m.ganha ? "" : "opacity-40 grayscale"}>
+                <IconeCaixa nome={m.icone} cor={m.ganha ? m.cor : "#94a3b8"} tamanho={30} className="!rounded-full" />
+              </span>
+              {m.titulo}
+            </li>
+          ))}
+        </ul>
+      </section>
     </>
   );
 }

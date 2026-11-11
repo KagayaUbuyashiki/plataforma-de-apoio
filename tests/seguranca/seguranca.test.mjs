@@ -284,6 +284,15 @@ describe("Controle de acesso (um aluno não vê nem altera dados de outro)", () 
     assert.ok(r1.error && r2.error);
   });
 
+  test("desafios: aluno registra no próprio checklist, mas não no de outro nem com item inventado", async () => {
+    const r1 = await clienteA.from("progresso_aluno").insert({ aluno_id: A.id, item: "desafio:lista" });
+    assert.equal(r1.error, null);
+    const r2 = await clienteA.from("progresso_aluno").insert({ aluno_id: B.id, item: "desafio:lista" });
+    const r3 = await clienteA.from("progresso_aluno").insert({ aluno_id: A.id, item: "desafio:<script>alert(1)</script>" });
+    const r4 = await clienteA.from("progresso_aluno").insert({ aluno_id: A.id, item: "desafio:" + "a".repeat(60) });
+    assert.ok(r2.error && r3.error && r4.error, "deveria recusar");
+  });
+
   test("aluno não acessa tabelas e funções do servidor", async () => {
     for (const t of ["tokens_aluno", "contas_login", "tentativas_acesso", "instrutores_autorizados"]) {
       const { data, error } = await clienteA.from(t).select("*");

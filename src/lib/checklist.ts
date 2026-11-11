@@ -6,7 +6,7 @@ export const ETAPAS_PROJETO = [
   { item: "etapa:apresentar", titulo: "Apresentei o meu site", texto: "Mostrei o site para a banca de voluntários." },
 ] as const;
 
-const REGEX_ITEM = /^(aula:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|etapa:(escolher-ods|html|css|apresentar))$/;
+const REGEX_ITEM = /^(aula:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|etapa:(escolher-ods|html|css|apresentar)|desafio:[a-z0-9-]{2,40})$/;
 
 export function itemValido(item: string) {
   return REGEX_ITEM.test(item);

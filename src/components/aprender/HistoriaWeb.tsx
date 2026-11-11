@@ -87,8 +87,8 @@ export function HistoriaWeb() {
             <p className="text-sm font-medium text-tinta-suave">Agora que você sabe como funciona, que tal criar a sua página?</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/aprender/laboratorio" className="btn-secundario">
-              Brincar no laboratório
+            <Link href="/aprender/desafios" className="btn-secundario">
+              Fazer um desafio
             </Link>
             <Link href="/editor" className="btn-primario group">
               Abrir o editor <Icone nome="seta" tamanho={16} espessura={2.2} className="seta-anda" />

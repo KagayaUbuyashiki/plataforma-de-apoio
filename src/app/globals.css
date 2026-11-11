@@ -113,6 +113,14 @@ body {
 @keyframes pulsar {
   50% { transform: scale(1.25); }
 }
+@keyframes brilho {
+  0%, 60% { transform: translateX(0) rotate(12deg); }
+  100% { transform: translateX(450%) rotate(12deg); }
+}
+@keyframes confete {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) rotate(var(--r)); opacity: 0; }
+}
 @keyframes surgir {
   from { opacity: 0; transform: translateY(16px) scale(0.96); }
 }

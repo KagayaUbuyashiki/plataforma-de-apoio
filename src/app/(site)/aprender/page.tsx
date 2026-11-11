@@ -25,6 +25,14 @@ const AREAS: { href: string; titulo: string; texto: string; icone: NomeIcone; co
     cor: "#0ea5c6",
   },
   {
+    href: "/aprender/desafios",
+    titulo: "Desafios",
+    texto: "15 exercícios curtos com correção na hora, em 3 trilhas. Resolva e ganhe medalhas!",
+    icone: "estrela",
+    cor: "#f59e0b",
+    destaque: "Pratique",
+  },
+  {
     href: "/aprender/laboratorio",
     titulo: "Laboratórios de CSS",
     texto: "Mexa nos controles e veja margin, padding, cores, fontes e Flexbox mudarem na hora.",
@@ -36,7 +44,7 @@ const AREAS: { href: string; titulo: string; texto: string; icone: NomeIcone; co
     titulo: "Meu site não funciona!",
     texto: "Os erros mais comuns de quem está começando, por que acontecem e como consertar.",
     icone: "lupa",
-    cor: "#f59e0b",
+    cor: "#E5243B",
   },
 ];
 
@@ -55,7 +63,7 @@ export default function Aprender() {
             href={a.href}
             data-revelar
             style={{ "--d": i } as React.CSSProperties}
-            className="vidro group relative flex flex-col gap-4 overflow-hidden rounded-[28px] p-7 transition duration-500 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-2 hover:bg-white/85 sm:p-8"
+            className={`vidro group relative flex flex-col gap-4 overflow-hidden rounded-[28px] p-7 transition duration-500 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-2 hover:bg-white/85 sm:p-8 ${i === 0 ? "md:col-span-2" : ""}`}
           >
             <span
               aria-hidden
