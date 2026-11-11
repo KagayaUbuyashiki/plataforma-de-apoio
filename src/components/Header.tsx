@@ -8,6 +8,7 @@ import { Icone } from "@/components/Icone";
 const LINKS = [
   { href: "/", rotulo: "Início" },
   { href: "/aulas", rotulo: "Aulas" },
+  { href: "/aprender", rotulo: "Aprender" },
   { href: "/editor", rotulo: "Editor" },
   { href: "/sites", rotulo: "Sites" },
   { href: "/ods", rotulo: "ODS" },
@@ -56,7 +57,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 md:flex" aria-label="Principal">
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Principal">
           {LINKS.map((l) => (
             <Link
               key={l.href}
@@ -71,7 +72,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           <Link
             href={conta.href}
             className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-2.5 text-sm font-bold text-tinta transition duration-300 hover:-translate-y-0.5 hover:bg-white"
@@ -85,7 +86,7 @@ export function Header() {
 
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-full bg-white text-tinta shadow-sm transition hover:scale-105 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-full bg-white text-tinta shadow-sm transition hover:scale-105 lg:hidden"
           aria-expanded={aberto}
           aria-controls="menu-celular"
           aria-label={aberto ? "Fechar menu" : "Abrir menu"}
@@ -98,7 +99,7 @@ export function Header() {
       {aberto && (
         <nav
           id="menu-celular"
-          className="vidro-forte mx-auto mt-2 flex max-w-6xl animate-entrar-menu flex-col gap-1 rounded-3xl p-3 md:hidden"
+          className="vidro-forte mx-auto mt-2 flex max-w-6xl animate-entrar-menu flex-col gap-1 rounded-3xl p-3 lg:hidden"
           aria-label="Principal"
         >
           {LINKS.map((l) => (
